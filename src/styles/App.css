@@ -1,38 +1,76 @@
-.App {
-  text-align: center;
+body {
+  background-color: #aad9b2;
+  background-image: url('../assets/images/bg.jpg');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: repeat; 
+  height: 100vh; 
+  color: #333333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.outer {
+  padding: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container {
+  max-width: 95%;
+  margin: auto;
+  padding: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.input {
+  width: 1;
+  color: #777;
+  padding: 8;
+  margin: 10;
+  width: 200;
 }
 
-.App-link {
-  color: #61dafb;
+.myform {
+  padding: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.myform input[type="text"],
+.myform textarea {
+  padding: 8px;
+  width: 100%;
+}
+
+.column {
+  padding: 20px;
+  float: left;
+  width: 50%;
+}
+
+.column_aut {
+  padding: 20px;
+  float: left;
+  width: 33%;
+}
+
+.Token_message {
+  display: inline;
+}
+
+.swap {
+  padding: 10px;
+}
+
+.swap_button {
+  float: right;
+}
+
+.markdown {
+  width: 80%;
+  margin: auto;
+}
+
+input, textarea, button {
+  font-family: inherit;
 }

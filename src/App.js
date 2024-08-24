@@ -1,36 +1,48 @@
-import * as React from 'react';
-
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import ProTip from './components/Home/ProTip';
-import Web3Provider from "./utils/network";
-
+import React from "react";
 import "./styles/App.css";
+import Web3Provider from "./utils/network";
+import NarBar from "./Components/NavBar/NavBar";
+import CoinSwapper from "./pages/Swap";
+import Pools from "./pages/Pools";
+import { Route, Routes } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
+import Liquidity from "./pages/Liquidity";
+import { createTheme, ThemeProvider } from "@mui/material";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}.
-    </Typography>
-  );
-}
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#6a9d6d",
+      contrastText: "#ffffff",
+    },
+    secondary: {
+      main: "#9e9e9e",
+      contrastText: "#ffffff",
+    },
+  },
+});
 
-export default function App() {
+const App = () => {
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-          Material UI Create React App example with styled-components
-        </Typography>
-        <ProTip />
-        <Copyright />
-      </Box>
-    </Container>
+    <div className="App">
+      <SnackbarProvider maxSnack={3}>
+        <ThemeProvider theme={theme}>
+          <Web3Provider
+            render={(network) => (
+              <div>
+                <NarBar />
+                <Routes>
+                  <Route path="/swap" element={<CoinSwapper network={network} />} />
+                  <Route path="/liquidity" element={<Liquidity network={network} />} />
+                  <Route path="/pools" element={<Pools network={network} />} />
+                </Routes>
+              </div>
+            )}
+          />
+        </ThemeProvider>
+      </SnackbarProvider>
+    </div>
   );
-}
+};
+
+export default App;

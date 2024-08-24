@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Paper, Typography, Box } from "@mui/material";
+import { Container, Grid, Paper, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // Styled Paper container with custom theme

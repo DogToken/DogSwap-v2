@@ -1,32 +1,30 @@
-import { useEffect, useState, useRef } from "react";
-import { Contract, ethers } from "ethers";
-import { createTheme, ThemeProvider } from "@mui/material";
-import { SnackbarProvider } from "notistack";
-import ConnectWalletPage from "../pages/connectWalletPage";
+import React, { useEffect, useState, useRef } from 'react';
+import { ethers } from 'ethers';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { SnackbarProvider } from 'notistack';
+import ConnectWalletPage from '../pages/connectWalletPage';
 import {
   getAccount,
   getFactory,
   getRouter,
   getNetwork,
   getWeth,
-} from "./ethereumFunctions";
-import COINS from "../constants/coins";
-import * as chains from "../constants/chains";
+} from './ethereumFunctions';
+import COINS from '../constants/coins';
+import * as chains from '../constants/chains';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#6a9d6d",
-      contrastText: "#ffffff",
+      main: '#6a9d6d',
+      contrastText: '#ffffff',
     },
     secondary: {
-      main: "#9e9e9e",
-      contrastText: "#ffffff",
+      main: '#9e9e9e',
+      contrastText: '#ffffff',
     },
   },
 });
-
-const autoReconnectDelay = 5000;
 
 const Web3Provider = (props) => {
   const [isConnected, setConnected] = useState(false);
@@ -69,7 +67,7 @@ const Web3Provider = (props) => {
         });
         setConnected(true);
       } else {
-        console.log("Wrong network mate.");
+        console.log('Wrong network mate.');
         setConnected(false);
       }
     } catch (error) {
@@ -108,7 +106,7 @@ const Web3Provider = (props) => {
         clearInterval(backgroundListener.current);
       }
     };
-  }, [network.account, network.chainID, network.provider]); // Dependencies to trigger re-run
+  }, [network.account, network.chainID, network.provider, createListener]); // Added createListener to dependencies
 
   const renderNotConnected = () => (
     <div className="App">
