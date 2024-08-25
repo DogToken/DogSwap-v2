@@ -21,7 +21,7 @@ export async function getNetwork(provider) {
 }
 
 export function getRouter(address, signer) {
-  return new Contract(address, ROUTER.abi, signer);
+  return new Contract(address, ROUTER, signer);
 }
 
 export async function checkNetwork(provider) {
@@ -33,11 +33,11 @@ export async function checkNetwork(provider) {
 }
 
 export function getWeth(address, signer) {
-  return new Contract(address, ERC20.abi, signer);
+  return new Contract(address, ERC20, signer);
 }
 
 export function getFactory(address, signer) {
-  return new Contract(address, FACTORY.abi, signer);
+  return new Contract(address, FACTORY, signer);
 }
 
 export async function getAccount() {
@@ -53,7 +53,7 @@ export async function getAccount() {
 //    `signer` - The current signer
 export function doesTokenExist(address, signer) {
   try {
-    return new Contract(address, ERC20.abi, signer);
+    return new Contract(address, ERC20, signer);
   } catch (err) {
     return false;
   }
@@ -92,7 +92,7 @@ export async function getBalanceAndSymbol(
         symbol: coins[0].abbr,
       };
     } else {
-      const token = new Contract(address, ERC20.abi, signer);
+      const token = new Contract(address, ERC20, signer);
       const tokenDecimals = await getDecimals(token);
       const balanceRaw = await token.balanceOf(accountAddress);
       const symbol = await token.symbol();
@@ -130,7 +130,7 @@ export async function swapTokens(
   const time = Math.floor(Date.now() / 1000) + 200000;
   const deadline = ethers.BigNumber.from(time);
 
-  const token1 = new Contract(address1, ERC20.abi, signer);
+  const token1 = new Contract(address1, ERC20, signer);
   const tokenDecimals = await getDecimals(token1);
   
   const amountIn = ethers.utils.parseUnits(amount, tokenDecimals);
@@ -185,10 +185,10 @@ export async function getAmountOut(
   signer
 ) {
   try {
-    const token1 = new Contract(address1, ERC20.abi, signer);
+    const token1 = new Contract(address1, ERC20, signer);
     const token1Decimals = await getDecimals(token1);
 
-    const token2 = new Contract(address2, ERC20.abi, signer);
+    const token2 = new Contract(address2, ERC20, signer);
     const token2Decimals = await getDecimals(token2);
 
     const values_out = await routerContract.getAmountsOut(
@@ -213,8 +213,8 @@ export async function fetchReserves(address1, address2, pair, signer) {
   try {
 
     // Get decimals for each coin
-    const coin1 = new Contract(address1, ERC20.abi, signer);
-    const coin2 = new Contract(address2, ERC20.abi, signer);
+    const coin1 = new Contract(address1, ERC20, signer);
+    const coin2 = new Contract(address2, ERC20, signer);
 
     const coin1Decimals = await getDecimals(coin1);
     const coin2Decimals = await getDecimals(coin2);
@@ -243,8 +243,8 @@ export async function fetchReservesRaw(address1, address2, pair, signer) {
   try {
 
     // Get decimals for each coin
-    const coin1 = new Contract(address1, ERC20.abi, signer);
-    const coin2 = new Contract(address2, ERC20.abi, signer);
+    const coin1 = new Contract(address1, ERC20, signer);
+    const coin2 = new Contract(address2, ERC20, signer);
     // Get reserves
     const reservesRaw = await pair.getReserves();
 
@@ -277,7 +277,7 @@ export async function getReserves(
 ) {
   try {
     const pairAddress = await factory.getPair(address1, address2);
-    const pair = new Contract(pairAddress, PAIR.abi, signer);
+    const pair = new Contract(pairAddress, PAIR, signer);
   
     if (pairAddress !== '0x0000000000000000000000000000000000000000'){
   

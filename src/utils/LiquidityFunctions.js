@@ -37,8 +37,8 @@ export async function addLiquidity(
     account,
     signer
 ) {
-    const token1 = new Contract(address1, ERC20.abi, signer);
-    const token2 = new Contract(address2, ERC20.abi, signer);
+    const token1 = new Contract(address1, ERC20, signer);
+    const token2 = new Contract(address2, ERC20, signer);
 
     const token1Decimals = await getDecimals(token1);
     const token2Decimals = await getDecimals(token2);
@@ -103,8 +103,8 @@ export async function removeLiquidity(
     signer,
     factory
 ) {
-    const token1 = new Contract(address1, ERC20.abi, signer);
-    const token2 = new Contract(address2, ERC20.abi, signer);
+    const token1 = new Contract(address1, ERC20, signer);
+    const token2 = new Contract(address2, ERC20, signer);
 
     const token1Decimals = await getDecimals(token1);
     const token2Decimals = await getDecimals(token2);
@@ -118,7 +118,7 @@ export async function removeLiquidity(
 
     const wethAddress = await routerContract.WETH();
     const pairAddress = await factory.getPair(address1, address2);
-    const pair = new Contract(pairAddress, PAIR.abi, signer);
+    const pair = new Contract(pairAddress, PAIR, signer);
 
     await pair.approve(routerContract.address, liquidity).then(tx => tx.wait());
 
@@ -188,7 +188,7 @@ async function quoteMintLiquidity(
 ) {
     const [reserveA, reserveB, totalSupply, pair] = await factory.getPair(address1, address2).then(async (pairAddress) => {
         if (pairAddress !== '0x0000000000000000000000000000000000000000') {
-            const pairContract = new Contract(pairAddress, PAIR.abi, signer);
+            const pairContract = new Contract(pairAddress, PAIR, signer);
             const reservesRaw = await fetchReservesRaw(address1, address2, pairContract, signer);
             const reserveA = ethers.BigNumber.from(reservesRaw[0].toString());
             const reserveB = ethers.BigNumber.from(reservesRaw[1].toString());
@@ -220,14 +220,14 @@ export async function quoteAddLiquidity(
   signer
 ) {
   const pairAddress = await factory.getPair(address1, address2);
-  const pair = new Contract(pairAddress, PAIR.abi, signer);
+  const pair = new Contract(pairAddress, PAIR, signer);
 
-  const reservesRaw = await fetchReserves(address1, address2, pair, signer);
+  const reservesRaw = await fetchReservesRaw(address1, address2, pair, signer);
   const reserveA = ethers.BigNumber.from(reservesRaw[0].toString());
   const reserveB = ethers.BigNumber.from(reservesRaw[1].toString());
 
-  const token1 = new Contract(address1, ERC20.abi, signer);
-  const token2 = new Contract(address2, ERC20.abi, signer);
+  const token1 = new Contract(address1, ERC20, signer);
+  const token2 = new Contract(address2, ERC20, signer);
 
   const token1Decimals = await getDecimals(token1);
   const token2Decimals = await getDecimals(token2);
@@ -282,7 +282,7 @@ export async function quoteRemoveLiquidity(
     signer
 ) {
     const pairAddress = await factory.getPair(address1, address2);
-    const pair = new Contract(pairAddress, PAIR.abi, signer);
+    const pair = new Contract(pairAddress, PAIR, signer);
 
     const reservesRaw = await fetchReserves(address1, address2, pair, signer);
     const reserveA = ethers.BigNumber.from(reservesRaw[0].toString());
@@ -298,8 +298,8 @@ export async function quoteRemoveLiquidity(
     const Aout = reserveA.mul(liquidityBN).div(totalSupply);
     const Bout = reserveB.mul(liquidityBN).div(totalSupply);
 
-    const token1 = new Contract(address1, ERC20.abi, signer);
-    const token2 = new Contract(address2, ERC20.abi, signer);
+    const token1 = new Contract(address1, ERC20, signer);
+    const token2 = new Contract(address2, ERC20, signer);
 
     return [
         liquidity,

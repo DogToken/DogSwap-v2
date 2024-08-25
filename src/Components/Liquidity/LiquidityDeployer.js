@@ -202,8 +202,8 @@ function LiquidityDeployer(props) {
     if (isButtonEnabled()) {
       const getQuote = async () => {
         try {
-          const token1 = new Contract(coin1.address, ERC20.abi, props.network.signer);
-          const token2 = new Contract(coin2.address, ERC20.abi, props.network.signer);
+          const token1 = new Contract(coin1.address, ERC20, props.network.signer);
+          const token2 = new Contract(coin2.address, ERC20, props.network.signer);
   
           const [decimals1, decimals2] = await Promise.all([
             getDecimals(token1),
