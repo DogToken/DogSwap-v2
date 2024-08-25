@@ -3,8 +3,8 @@ import { Button, Typography, CircularProgress, TextField, Card } from '@mui/mate
 import { styled } from '@mui/system';
 import { Contract, ethers } from 'ethers';
 import { getProvider, getSigner } from '../../utils/ethereumFunctions';
-import boneTokenABI from '../../build/BoneToken.json';
-import masterChefABI from '../../build/MasterChef.json';
+import boneTokenABI from "./../../assets/abi/IERC20.json";
+import masterChefABI from './../../assets/abi/MasterChef.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 

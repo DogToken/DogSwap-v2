@@ -17,7 +17,7 @@ import WrongNetwork from "../wrongNetwork";
 import LiquidityInfoCard from "../../context/LiquidityInfoCard";
 import { Contract, ethers } from "ethers";
 import { getDecimals } from "../../utils/ethereumFunctions";
-import ERC20 from "../../build/ERC20.json";
+import ERC20 from "./../../assets/abi/IERC20.json";
 
 const StyledContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),

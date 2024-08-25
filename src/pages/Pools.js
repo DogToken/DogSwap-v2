@@ -5,8 +5,8 @@ import StakingPool from '../Components/Pools/StakingPool';
 import { poolData } from '../constants/poolData';
 import { getProvider, getSigner, getNetwork } from '../utils/ethereumFunctions';
 import { Contract, ethers } from 'ethers';
-import boneTokenABI from '../build/BoneToken.json';
-import masterChefABI from '../build/MasterChef.json';
+import boneTokenABI from "./../assets/abi/IERC20.json";
+import masterChefABI from './../assets/abi/MasterChef.json';
 
 // Styled components
 const RootContainer = styled(Container)(({ theme }) => ({

@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { MenuItems } from './MenuItems';
 import { ethers } from 'ethers';
 import { FaBars, FaTimes, FaCaretDown } from 'react-icons/fa';
-import boneTokenABI from "../../build/BoneToken.json";
-import pairABI from "../../build/IUniswapV2Pair.json";
+import boneTokenABI from "./../../assets/abi/IERC20.json";
+import pairABI from "./../../assets/abi/IUniswapV2Pair.json";
 import axios from 'axios';
-import '../../styles/NavBar.css';
+import './../../styles/NavBar.css';
 
 // Constants
 const POOLS = [
@@ -37,8 +37,7 @@ const NavBar = () => {
 
       const boneContract = new ethers.Contract(
         '0x9D8dd79F2d4ba9E1C3820d7659A5F5D2FA1C22eF',
-        boneTokenABI,
-        signer
+        boneTokenABI
       );
 
       const [mintmeBalance] = await Promise.all([
