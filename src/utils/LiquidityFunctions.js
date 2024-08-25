@@ -284,7 +284,7 @@ export async function quoteRemoveLiquidity(
     const pairAddress = await factory.getPair(address1, address2);
     const pair = new Contract(pairAddress, PAIR, signer);
 
-    const reservesRaw = await fetchReserves(address1, address2, pair, signer);
+    const reservesRaw = await fetchReservesRaw(address1, address2, pair, signer);
     const reserveA = ethers.BigNumber.from(reservesRaw[0].toString());
     const reserveB = ethers.BigNumber.from(reservesRaw[1].toString());
 
