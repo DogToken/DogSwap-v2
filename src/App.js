@@ -35,6 +35,7 @@ const App = () => {
                   <Route path="/swap" element={<CoinSwapper network={network} />} />
                   <Route path="/liquidity" element={<Liquidity network={network} />} />
                   <Route path="/pools" element={<Pools network={network} />} />
+                  <Route path="*" element={<CoinSwapper network={network} />} />
                 </Routes>
               </div>
             )}

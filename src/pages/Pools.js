@@ -98,8 +98,8 @@ const Pools = () => {
     
     const allPoolsData = await Promise.all(
       poolData.map(async (pool) => {
-        const lpTokenContract = new Contract(pool.lpTokenAddress, boneTokenABI, signer);
-        const masterChefContract = new Contract(pool.MASTER_CHEF_ADDRESS, masterChefABI, signer);
+        const lpTokenContract = new Contract(pool.lpTokenAddress, boneTokenABI, provider);
+        const masterChefContract = new Contract(pool.MASTER_CHEF_ADDRESS, masterChefABI, provider);
 
         const walletBalance = await lpTokenContract.balanceOf(signer.getAddress());
         const formattedWalletBalance = ethers.utils.formatUnits(walletBalance, 18);

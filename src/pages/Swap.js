@@ -193,11 +193,11 @@ function CoinSwapper(props) {
   };
 
   useEffect(() => {
-    console.log(
-      `Trying to get Reserves between:\n${coin1.address}\n${coin2.address}`
-    );
-
     if (coin1.address && coin2.address) {
+      console.log(
+        `Trying to get Reserves between:\n${coin1.address}\n${coin2.address}`
+      );
+
       getReserves(
         coin1.address,
         coin2.address,

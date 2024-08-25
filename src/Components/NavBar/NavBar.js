@@ -109,7 +109,7 @@ const NavBar = () => {
 
   const getBonePriceInMintMe = async (boneContract, provider) => {
     const bonePool = POOLS.find(pool => pool.name === "$BONE-WMINT");
-    const boneReserves = await new ethers.Contract(bonePool.address, pairABI.abi, provider).getReserves();
+    const boneReserves = await new ethers.Contract(bonePool.address, pairABI, provider).getReserves();
     const boneReserve0 = boneReserves[0] / 10 ** BONE_TOKEN_DECIMALS;
     const boneReserve1 = boneReserves[1] / 10 ** 18;
     const boneInWMINT = boneReserve1 / boneReserve0;
