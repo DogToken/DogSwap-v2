@@ -3,8 +3,8 @@ import { fetchReserves, fetchReservesRaw, getDecimals } from "../utils/ethereumF
 
 window.BigNumber = BigNumber;
 
-const ERC20 = require("../build/ERC20.json");
-const PAIR = require("../build/IUniswapV2Pair.json");
+const ERC20 = require("./../assets/abi/IERC20.json");
+const PAIR = require("./../assets/abi/IUniswapV2Pair.json");
 
 const ONE = ethers.BigNumber.from(1);
 const TWO = ethers.BigNumber.from(2);
