@@ -4,6 +4,7 @@ import Web3Provider from "./utils/network";
 import NarBar from "./Components/NavBar/NavBar";
 import CoinSwapper from "./pages/Swap";
 import Pools from "./pages/Pools";
+import Dash from "./pages/Dash";
 import { Route, Routes } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import Liquidity from "./pages/Liquidity";
@@ -35,6 +36,7 @@ const App = () => {
                   <Route path="/swap" element={<CoinSwapper network={network} />} />
                   <Route path="/liquidity" element={<Liquidity network={network} />} />
                   <Route path="/pools" element={<Pools network={network} />} />
+                  <Route path="/dash" element={<Dash network={network} />} />
                   <Route path="*" element={<CoinSwapper network={network} />} />
                 </Routes>
               </div>

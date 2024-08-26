@@ -6,7 +6,7 @@ import { getProvider, getSigner } from '../../utils/ethereumFunctions';
 import boneTokenABI from "./../../assets/abi/IERC20.json";
 import masterChefABI from './../../assets/abi/MasterChef.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faArrowDown, faGift } from '@fortawesome/free-solid-svg-icons';
 
 // Styled components
 const Root = styled(Card)(({ theme }) => ({
@@ -16,7 +16,7 @@ const Root = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'stretch',
-  maxWidth: '250px', // Adjusted max width
+  maxWidth: '250px',
   margin: 'auto',
 }));
 
@@ -95,6 +95,26 @@ const StakingPool = ({ pool }) => {
     }
   };
 
+  const handleClaimRewards = async () => {
+    try {
+      setLoading(true);
+
+      const provider = getProvider();
+      const signer = getSigner(provider);
+
+      const masterChefContract = new Contract(MASTER_CHEF_ADDRESS, masterChefABI, signer);
+      const transaction = await masterChefContract.deposit(poolId, 0);  // 0 tokens deposited to claim rewards
+      await transaction.wait();
+
+      setClaimMessage('Rewards claimed successfully!');
+    } catch (error) {
+      console.error('Error claiming rewards:', error);
+      setClaimMessage('Failed to claim rewards. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Root>
       <TextField
@@ -127,6 +147,15 @@ const StakingPool = ({ pool }) => {
             {loading ? <CircularProgress size={24} color="inherit" /> : <FontAwesomeIcon icon={faArrowDown} />}
           </Button>
         </ButtonRow>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={handleClaimRewards}
+          disabled={loading}
+          fullWidth
+        >
+          {loading ? <CircularProgress size={24} color="inherit" /> : <FontAwesomeIcon icon={faGift} />}
+        </Button>
       </ActionsContainer>
       {claimMessage && (
         <Typography variant="body2" color="textPrimary" sx={{ marginTop: 2 }}>
