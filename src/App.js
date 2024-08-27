@@ -2,6 +2,7 @@ import React from "react";
 import "./styles/App.css";
 import Web3Provider from "./utils/network";
 import NarBar from "./Components/NavBar/NavBar";
+import Footer from "./Components/Footer/Footer";
 import CoinSwapper from "./pages/Swap";
 import Pools from "./pages/Pools";
 import Dash from "./pages/Dash";
@@ -39,6 +40,7 @@ const App = () => {
                   <Route path="/dash" element={<Dash network={network} />} />
                   <Route path="*" element={<CoinSwapper network={network} />} />
                 </Routes>
+                <Footer />
               </div>
             )}
           />

@@ -166,3 +166,53 @@ body {
   padding: 0;
   padding-top: 75px; /* Adjust based on navbar height */
 }
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.user-menu-item {
+  display: block;
+  padding: 5px 10px;
+  color: black;
+  text-decoration: none;
+}
+
+.user-menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.disconnect-button {
+  width: 100%;
+  padding: 5px 10px;
+  margin-top: 10px;
+  background-color: #ff4136;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.disconnect-button:hover {
+  background-color: #ff1a1a;
+}

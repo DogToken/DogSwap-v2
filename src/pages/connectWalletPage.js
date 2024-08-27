@@ -1,5 +1,5 @@
-import React from "react";
-import { Container, Grid, Paper, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Container, Grid, Paper, Typography, Button, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // Styled Paper container with custom theme
@@ -27,7 +27,68 @@ const Footer = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
-export default function ConnectWalletPage() {
+// Styled Button with custom theme
+const NetworkButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(3),
+  padding: theme.spacing(1.5, 3),
+  color: "#ffffff", // White text
+  backgroundColor: theme.palette.primary.main,
+  '&:hover': {
+    backgroundColor: theme.palette.primary.dark,
+  },
+}));
+
+const ConnectWalletPage = () => {
+  const [wrongNetwork, setWrongNetwork] = useState(false);
+
+  // Replace with your desired network details
+  const desiredNetworkId = '24734'; // Example: Ethereum Mainnet
+  const desiredNetworkName = 'MintMe SmartChain';
+  const rpcUrl = 'https://node.1000x.ch';
+  const chainIdHex = '0x609e';
+
+  useEffect(() => {
+    const checkNetwork = async () => {
+      if (window.ethereum) {
+        const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (currentChainId !== desiredNetworkId) {
+          setWrongNetwork(true);
+        }
+      }
+    };
+    checkNetwork();
+  }, []);
+
+  const switchNetwork = async () => {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: chainIdHex }],
+      });
+      setWrongNetwork(false);
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: chainIdHex,
+                chainName: desiredNetworkName,
+                rpcUrls: [rpcUrl],
+              },
+            ],
+          });
+          setWrongNetwork(false);
+        } catch (addError) {
+          console.error('Failed to add network:', addError);
+        }
+      } else {
+        console.error('Failed to switch network:', switchError);
+      }
+    }
+  };
+
   return (
     <div>
       {/* Title Section */}
@@ -41,8 +102,17 @@ export default function ConnectWalletPage() {
       <Container>
         <PaperContainer>
           <Title variant="h6">
-            Please connect an Ethereum wallet to your browser to use the application.
+            {wrongNetwork
+              ? `You're either connected to the wrong network or not connected at all. Please switch to ${desiredNetworkName}.`
+              : 'Please connect a smart wallet to your browser to use the application.'}
           </Title>
+          {wrongNetwork && (
+            <Box textAlign="center">
+              <NetworkButton onClick={switchNetwork}>
+                Switch to {desiredNetworkName}
+              </NetworkButton>
+            </Box>
+          )}
         </PaperContainer>
       </Container>
 
@@ -51,4 +121,6 @@ export default function ConnectWalletPage() {
       </Footer>
     </div>
   );
-}
+};
+
+export default ConnectWalletPage;
