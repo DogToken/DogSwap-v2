@@ -1,3 +1,4 @@
+![GitHub package.json version](https://img.shields.io/github/package-json/v/DogToken/Dogswap-v2)
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fdogswap.xyz)
 ![GitHub contributors](https://img.shields.io/github/contributors/DogToken/DogSwap-v2)
 ![GitHub Issues](https://img.shields.io/github/issues/DogToken/DogSwap-v2)
