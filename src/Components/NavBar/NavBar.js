@@ -10,7 +10,6 @@ import defaultAvatar from './../../assets/images/defaultavatar.jpg';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [mintmeBalance, setMintmeBalance] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(null);
   const [bonePriceInUSD, setBonePriceInUSD] = useState(0);
@@ -26,11 +25,8 @@ const NavBar = () => {
         const signer = provider.getSigner();
         const address = await signer.getAddress();
 
-        const mintmeBalance = await provider.getBalance(address);
-        const formattedMintmeBalance = ethers.utils.formatEther(mintmeBalance);
         const bonePriceInUSD = await getBonePriceInUSD(provider);
 
-        setMintmeBalance(formattedMintmeBalance);
         setBonePriceInUSD(bonePriceInUSD);
         setUserAddress(address);
         setIsConnected(true);
@@ -44,7 +40,6 @@ const NavBar = () => {
 
   const disconnectWallet = () => {
     setIsConnected(false);
-    setMintmeBalance(0);
     setBonePriceInUSD(0);
     setShowUserMenu(null);
   };

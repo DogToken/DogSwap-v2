@@ -14,4 +14,9 @@ export const MenuItems = [
     url: "/pools",
     cName: "nav-links",
   },
+  {
+    title: "Stake",
+    url: "/stake",
+    cName: "nav-links",
+  },
 ];

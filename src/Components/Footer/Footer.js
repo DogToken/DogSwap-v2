@@ -54,7 +54,7 @@ const Footer = () => {
               <IoMdPaw /> DogSwap
             </LogoTypography>
             <Typography variant="body2">
-              The ultimate crypto swap platform for dog lovers.
+              The ultimate DeFi Platform on the MintMe SmartChain. Seamlessly swap your tokens or earn some more!
             </Typography>
             <Box mt={1}>
               <SocialButton aria-label="Twitter">
@@ -76,16 +76,16 @@ const Footer = () => {
               Quick Links
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Home</StyledLink>
+              <StyledLink href="swap">Home</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Swap</StyledLink>
+              <StyledLink href="swap">Swap</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Liquidity</StyledLink>
+              <StyledLink href="liquidity">Liquidity</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Farms</StyledLink>
+              <StyledLink href="pools">Pools</StyledLink>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -93,16 +93,16 @@ const Footer = () => {
               Resources
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Docs</StyledLink>
+              <StyledLink href="/docs">Docs</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Whitepaper</StyledLink>
+              <StyledLink href="/whitepaper">Whitepaper</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Blog</StyledLink>
+              <StyledLink href="/blog">Blog</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">FAQs</StyledLink>
+              <StyledLink href="/faq">FAQs</StyledLink>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -110,13 +110,13 @@ const Footer = () => {
               Legal
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Terms of Service</StyledLink>
+              <StyledLink href="/terms">Terms of Service</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Privacy Policy</StyledLink>
+              <StyledLink href="/privacy">Privacy Policy</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="#">Cookie Policy</StyledLink>
+              <StyledLink href="/cookies">Cookie Policy</StyledLink>
             </Typography>
           </Grid>
         </Grid>

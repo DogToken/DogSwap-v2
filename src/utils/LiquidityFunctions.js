@@ -1,5 +1,5 @@
 import { Contract, ethers, BigNumber } from "ethers";
-import { fetchReserves, fetchReservesRaw, getDecimals } from "../utils/ethereumFunctions";
+import { fetchReservesRaw, getDecimals } from "../utils/ethereumFunctions";
 
 window.BigNumber = BigNumber;
 
@@ -156,10 +156,14 @@ const quote = (amount1, reserve1, reserve2) => {
 };
 
 async function estimateFee(pair, factory, reserve0, reserve1) {
-    const feeOn = (await factory.feeTo()) !== '0x3D041510f58665a17D722EE2BC73Ae409BB8715b';
+    const feeTo = await factory.feeTo();
+    const feeOn = feeTo !== '0x3D041510f58665a17D722EE2BC73Ae409BB8715b'; // Check fee status
+
+    // Fetch kLast value
     const kLast = await pair.kLast();
     const totalSupply = await pair.totalSupply();
 
+    // Ensure kLast is used in calculations
     if (feeOn && !kLast.isZero()) {
         const rootK = sqrt(reserve0.mul(reserve1));
         const rootKLast = sqrt(kLast);
@@ -170,13 +174,15 @@ async function estimateFee(pair, factory, reserve0, reserve1) {
             const liquidity = numerator.div(denominator);
 
             if (liquidity.gt(0)) {
-                return liquidity;
+                return liquidity; // Returning calculated liquidity
             }
         }
     }
 
-    return ethers.BigNumber.from(0);
+    return ethers.BigNumber.from(0); // No liquidity
 }
+
+
 
 async function quoteMintLiquidity(
     address1,

@@ -1,7 +1,9 @@
 import React from "react";
 import "./styles/App.css";
+import ReactGA from 'react-ga4';
 import Web3Provider from "./utils/network";
 import NarBar from "./Components/NavBar/NavBar";
+import Stake from "./pages/Stake"
 import Footer from "./Components/Footer/Footer";
 import CoinSwapper from "./pages/Swap";
 import Pools from "./pages/Pools";
@@ -25,6 +27,9 @@ const theme = createTheme({
 });
 
 const App = () => {
+  ReactGA.initialize('G-823N1D2MNZ');
+  ReactGA.send({ hitType: "pageview", page: "/swap", title: "Swap Page" });
+  
   return (
     <div className="App">
       <SnackbarProvider maxSnack={3}>
@@ -36,6 +41,7 @@ const App = () => {
                 <Routes>
                   <Route path="/swap" element={<CoinSwapper network={network} />} />
                   <Route path="/liquidity" element={<Liquidity network={network} />} />
+                  <Route path="/stake" element={<Stake network={network} />} />
                   <Route path="/pools" element={<Pools network={network} />} />
                   <Route path="/dash" element={<Dash network={network} />} />
                   <Route path="*" element={<CoinSwapper network={network} />} />

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import ReactGA from 'react-ga4'; // Import ReactGA for GA4 tracking
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Avatar } from '@mui/material';
 import { styled } from '@mui/system';
 import StakingPool from '../Components/Pools/StakingPool';
 import { poolData } from '../constants/poolData';
-import { getProvider, getSigner, getNetwork } from '../utils/ethereumFunctions';
+import { getProvider, getSigner } from '../utils/ethereumFunctions';
 import { Contract, ethers } from 'ethers';
 import boneTokenABI from "./../assets/abi/IERC20.json";
 import masterChefABI from './../assets/abi/MasterChef.json';
@@ -79,7 +80,6 @@ const OverlappingAvatar = styled(({ overlap, ...props }) => <Avatar {...props} /
   left: overlap ? '20px' : 'auto',  // Adjust based on overlap required
 }));
 
-
 const TokenAvatar = styled(Avatar)(({ theme }) => ({
   width: 32,
   height: 32,
@@ -95,7 +95,7 @@ const Pools = () => {
   const fetchAllPoolsData = async () => {
     const provider = getProvider();
     const signer = getSigner(provider);
-    
+
     const allPoolsData = await Promise.all(
       poolData.map(async (pool) => {
         const lpTokenContract = new Contract(pool.lpTokenAddress, boneTokenABI, provider);
@@ -119,6 +119,14 @@ const Pools = () => {
       })
     );
     setPoolsData(allPoolsData);
+  };
+
+  const handleClick = (action, label) => {
+    ReactGA.event({
+      category: 'User Interaction',
+      action,
+      label,
+    });
   };
 
   const fixedPools = poolsData.filter(pool => pool.poolType === 'Fixed');
@@ -159,7 +167,10 @@ const Pools = () => {
                   <StyledTableCell align="center">{pool.stakedLpTokens}</StyledTableCell>
                   <StyledTableCell align="center">{pool.pendingBone} $BONE</StyledTableCell>
                   <StyledTableCell align="center">
-                    <StakingPool pool={pool} />
+                    <StakingPool
+                      pool={pool}
+                      onClick={() => handleClick('Button Click', `Staking Pool - ${pool.title}`)}
+                    />
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
@@ -199,7 +210,10 @@ const Pools = () => {
                   <StyledTableCell align="center">{pool.stakedLpTokens}</StyledTableCell>
                   <StyledTableCell align="center">{pool.pendingBone} $BONE</StyledTableCell>
                   <StyledTableCell align="center">
-                    <StakingPool pool={pool} />
+                    <StakingPool
+                      pool={pool}
+                      onClick={() => handleClick('Button Click', `Staking Pool - ${pool.title}`)}
+                    />
                   </StyledTableCell>
                 </StyledTableRow>
               ))}

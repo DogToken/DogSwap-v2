@@ -1,10 +1,11 @@
 import React from "react";
+import ReactGA from 'react-ga4'; // Import ReactGA for GA4 tracking
 import { Container, Grid, Paper, Typography, styled } from "@mui/material";
-
 import SwitchButton from "../Components/Liquidity/SwitchButton";
 import LiquidityDeployer from "../Components/Liquidity/LiquidityDeployer";
 import LiquidityRemover from "../Components/Liquidity/RemoveLiquidity";
 
+// Styled components
 const PaperContainer = styled(Paper)(({ theme }) => ({
   borderRadius: theme.spacing(3),
   padding: theme.spacing(4),
@@ -26,11 +27,19 @@ const ContentContainer = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(4),
 }));
 
-function Liquidity(props) {
+const Liquidity = (props) => {
   const [deploy, setDeploy] = React.useState(true);
 
   const deployOrRemove = (deploy) => {
     return deploy ? <LiquidityDeployer network={props.network}/> : <LiquidityRemover network={props.network}/>;
+  };
+
+  const handleSwitch = (action) => {
+    ReactGA.event({
+      category: 'Liquidity Management',
+      action: 'Switch Action',
+      label: action,
+    });
   };
 
   return (
@@ -40,7 +49,7 @@ function Liquidity(props) {
           Liquidity Management
         </Title>
         <Grid container justifyContent="center" style={{ marginBottom: "24px" }}>
-          <SwitchButton setDeploy={setDeploy} />
+          <SwitchButton setDeploy={setDeploy} onSwitch={(deploy) => handleSwitch(deploy ? 'Deploy' : 'Remove')} />
         </Grid>
 
         <ContentContainer>

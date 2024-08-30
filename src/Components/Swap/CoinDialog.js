@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Dialog,
@@ -17,8 +17,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 import * as COLORS from '@mui/material/colors';
 import COINS from '../../constants/coins';
-import { ethers } from 'ethers'; // Ensure you have ethers installed
-import { doesTokenExist } from '../../utils/ethereumFunctions'; // Ensure this import is correct
+import { ethers } from 'ethers';
+import { doesTokenExist } from '../../utils/ethereumFunctions';
 
 // Styled Dialog Container
 const DialogContainer = styled(Dialog)(({ theme }) => ({
@@ -71,7 +71,7 @@ const CoinCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.spacing(1),
   boxShadow: `0px 4px 8px ${COLORS.grey[400]}`,
   cursor: 'pointer',
-  padding: theme.spacing(1), // Added padding to the card
+  padding: theme.spacing(1),
   '&:hover': {
     boxShadow: `0px 8px 16px ${COLORS.grey[500]}`,
   },
@@ -81,9 +81,9 @@ const CoinCard = styled(Card)(({ theme }) => ({
 const CoinCardMedia = styled(CardMedia)(({ theme }) => ({
   width: 50,
   height: 50,
-  borderRadius: '50%', // Circular logo
-  marginRight: theme.spacing(2), // Increased margin to the right
-  backgroundColor: '#fff', // Optional: background color for better logo visibility
+  borderRadius: '50%',
+  marginRight: theme.spacing(2),
+  backgroundColor: '#fff',
 }));
 
 // Styled CardContent for Coin Details
@@ -100,9 +100,9 @@ const AddressTextField = styled(TextField)(({ theme }) => ({
   margin: theme.spacing(2, 0),
 }));
 
-export default function CoinDialog({ onClose, open, coins, signer }) {
-  const [address, setAddress] = React.useState('');
-  const [error, setError] = React.useState('');
+function CoinDialog({ onClose, open, coins, signer }) {
+  const [address, setAddress] = useState('');
+  const [error, setError] = useState('');
 
   const isValidAddress = (address) => {
     return ethers.utils.isAddress(address);
@@ -201,7 +201,7 @@ export default function CoinDialog({ onClose, open, coins, signer }) {
                   alt={coin.name}
                 />
                 <CoinCardContent>
-                  <Typography variant="h6">{coin.abbr}</Typography>
+                  <Typography variant="body1">{coin.abbr}</Typography> {/* Changed from h6 to body1 */}
                   <Typography variant="body2" sx={{ opacity: 0.7 }}>
                     {coin.name}
                   </Typography>
@@ -234,3 +234,5 @@ CoinDialog.propTypes = {
   ).isRequired,
   signer: PropTypes.object,
 };
+
+export default CoinDialog;

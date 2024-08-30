@@ -5,14 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2024-08-30
+
+### New Features
+
+- Optimised staking page
+- GA-4 Analytics tracking on all pages
+
+### Changes
+
+- Adjusted code in NavBar to fetch price
+- Moved TVL to staking page
+- Added APY to staking page (Not working atm)
+- Changed links in Footer
+- Dashboard edits to link Profile
+- Updated ReadMe
+
+### New Files
+
+- Added BoneToken abi
+- Added Staking page
+
+### Fixes
+
+- Dead links
+- eslint Unused / errors
+
 ## [2.1.1] - 2024-08-27
 
 Small incremental update
 
 ### New features
 
-- Dashboard view
-- 
+- Dashboard page
 
 ### New files
 

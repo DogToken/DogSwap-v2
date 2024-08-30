@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Grid,
-  Paper,
   Typography,
   styled,
-  useTheme,
 } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { useSnackbar } from "notistack";
-import { getBalanceAndSymbol, getReserves } from "../../utils/ethereumFunctions";
+import { getBalanceAndSymbol, getReserves, getDecimals } from "../../utils/ethereumFunctions";
 import { addLiquidity, quoteAddLiquidity } from "../../utils/LiquidityFunctions";
 import CoinField from "../Swap/CoinField";
 import CoinDialog from "../Swap/CoinDialog";
 import LoadingButton from "../LoadingButton";
-import WrongNetwork from "../wrongNetwork";
 import LiquidityInfoCard from "../../context/LiquidityInfoCard";
 import { Contract, ethers } from "ethers";
-import { getDecimals } from "../../utils/ethereumFunctions";
 import ERC20 from "./../../assets/abi/IERC20.json";
 
 const StyledContainer = styled('div')(({ theme }) => ({
@@ -32,41 +28,11 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-const PaperContainer = styled(Paper)(({ theme }) => ({
-  borderRadius: theme.spacing(2),
-  padding: theme.spacing(2),
-  paddingBottom: theme.spacing(3),
-  maxWidth: 700, // Increased for better content width
-  width: "100%",
-  background: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  boxShadow: theme.shadows[3],
-}));
-
-const Title = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
-  padding: theme.spacing(1),
-  marginBottom: theme.spacing(2),
-}));
-
-const Balance = styled(Typography)(({ theme }) => ({
-  padding: theme.spacing(1),
-  textAlign: "center",
-}));
-
-const Hr = styled('hr')(({ theme }) => ({
-  width: "100%",
-  borderColor: theme.palette.divider,
-  margin: `${theme.spacing(2)} 0`,
-}));
-
 function LiquidityDeployer(props) {
-  const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
 
   const [dialog1Open, setDialog1Open] = useState(false);
   const [dialog2Open, setDialog2Open] = useState(false);
-  const [wrongNetworkOpen, setWrongNetworkOpen] = useState(false);
 
   const [coin1, setCoin1] = useState({ address: undefined, symbol: undefined, balance: undefined });
   const [coin2, setCoin2] = useState({ address: undefined, symbol: undefined, balance: undefined });
@@ -99,7 +65,7 @@ function LiquidityDeployer(props) {
     ? `${reserve} ${symbol}`
     : "0.0";
 
-  const isButtonEnabled = () => {
+  const isButtonEnabled = useCallback(() => {
     const parsedInput1 = parseFloat(field1Value);
     const parsedInput2 = parseFloat(field2Value);
     return (
@@ -112,7 +78,7 @@ function LiquidityDeployer(props) {
       parsedInput1 <= coin1.balance &&
       parsedInput2 <= coin2.balance
     );
-  };
+  }, [coin1.address, coin1.balance, coin2.address, coin2.balance, field1Value, field2Value]);
 
   const deploy = () => {
     setLoading(true);
@@ -234,7 +200,7 @@ function LiquidityDeployer(props) {
     } else {
       setLiquidityOut([0, 0, 0]);
     }
-  }, [coin1.address, coin2.address, field1Value, field2Value, props.network.factory, props.network.signer]);
+  }, [coin1.address, coin2.address, field1Value, field2Value, props.network.factory, props.network.signer, isButtonEnabled]);
 
   useEffect(() => {
     const coinTimeout = setTimeout(() => {
@@ -250,8 +216,8 @@ function LiquidityDeployer(props) {
           setLiquidityTokens(data[2]);
         });
       }
-
-      if (coin1.address && props.network.account && !wrongNetworkOpen) {
+  
+      if (coin1.address && props.network.account) {
         getBalanceAndSymbol(
           props.network.account,
           coin1.address,
@@ -263,8 +229,8 @@ function LiquidityDeployer(props) {
           setCoin1((prevCoin) => ({ ...prevCoin, balance: data.balance }));
         });
       }
-
-      if (coin2.address && props.network.account && !wrongNetworkOpen) {
+  
+      if (coin2.address && props.network.account) {
         getBalanceAndSymbol(
           props.network.account,
           coin2.address,
@@ -277,10 +243,10 @@ function LiquidityDeployer(props) {
         });
       }
     }, 10000);
-
+  
     return () => clearTimeout(coinTimeout);
-  }, [coin1.address, coin2.address, props.network.account, props.network.factory, props.network.signer, wrongNetworkOpen]);
-
+  }, [coin1.address, coin2.address, props.network.account, props.network.factory, props.network.signer, props.network.provider, props.network.coins, props.network.weth.address]);
+  
   return (
     <StyledContainer>
       <StyledTypography variant="h5" align="center">
@@ -299,7 +265,6 @@ function LiquidityDeployer(props) {
         coins={props.network.coins}
         signer={props.network.signer}
       />
-      <WrongNetwork open={wrongNetworkOpen} />
 
       <Grid container direction="column" spacing={3}>
         <Grid item>
