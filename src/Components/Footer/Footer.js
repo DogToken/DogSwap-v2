@@ -93,13 +93,13 @@ const Footer = () => {
               Resources
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="/docs">Docs</StyledLink>
+              <StyledLink href="https://docs.dogswap.xyz/">Docs</StyledLink>
             </Typography>
             <Typography variant="body2">
               <StyledLink href="/whitepaper">Whitepaper</StyledLink>
             </Typography>
             <Typography variant="body2">
-              <StyledLink href="/blog">Blog</StyledLink>
+              <StyledLink href="https://blog.dogswap.xyz/">Blog</StyledLink>
             </Typography>
             <Typography variant="body2">
               <StyledLink href="/faq">FAQs</StyledLink>

@@ -2,15 +2,17 @@ import React, { useState, useEffect, useMemo } from 'react';
 import ReactGA from 'react-ga4'; // Import ReactGA for GA4 tracking
 import {
   Container, Typography, Grid, Paper, Box, Avatar, Button, CircularProgress, TextField,
-  Tooltip, Snackbar, Alert, Slider, Chip, Divider, useTheme, useMediaQuery
+  Tooltip, Snackbar, Alert, Slider, useTheme, useMediaQuery
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { Contract, ethers } from 'ethers';
 import { getProvider, getSigner, getNetwork } from '../utils/ethereumFunctions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoins, faWallet, faHandHoldingUsd, faClock, faChartLine, faExchangeAlt, faPercent } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faWallet, faHandHoldingUsd, faClock, faChartLine, faExchangeAlt, faPercent, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import boneTokenABI from '../assets/abi/BoneToken.json';
 import masterChefABI from '../assets/abi/MasterChef.json';
+import axios from 'axios';
+import pairABI from '../assets/abi/IUniswapV2Pair.json';
 
 // Styled components (updated)
 const RootContainer = styled(Container)(({ theme }) => ({
@@ -158,15 +160,117 @@ export default function Stake() {
   const [apy, setAPY] = useState('0');
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
+  const [tvlData, setTVLData] = useState('0');
+  const [mintmePrice, setMintmePrice] = useState(null);
+  const [bonePrice, setBonePrice] = useState(null);
+  const [bonePriceInUSD, setBonePriceInUSD] = useState(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const BONE_TOKEN_ADDRESS = "0x9D8dd79F2d4ba9E1C3820d7659A5F5D2FA1C22eF";
+  const BONE_TOKEN_DECIMALS = 18;
+  const coinId = 'webchain';
+
+  const getBoneTokenInstance = (networkId, signer) => {
+    return new Contract(BONE_TOKEN_ADDRESS, boneTokenABI, signer);
+  };
+
+  const POOLS = [
+    { id: 0, name: "$BONE-WMINT", address: "0x21D897515b2C4393F7a23BBa210b271D13CCdF10" },
+    { id: 1, name: "$BONE-USDC", address: "0x0BA7216BD34CAF32d1FBCb9341997328b38a03a3" },
+    { id: 2, name: "WMINT-USDC", address: "0x1Ea95048A66455C3852dBE4620A3970831564189" },
+    { id: 5, name: "WMINT-DOGSP", address: "0x07Da7DA47b3C71a023d194ff623ab3a737c46393" },
+    { id: 6, name: "$BONE-DOGSP", address: "0xCfFF901398cB001D740FFf564D2dcc9Dbd898a11" },
+    { id: 7, name: "1000x-WMINT", address: "0x34D99393593245F3268ceAcf35a17407C49c4D59" },
+    { id: 8, name: "1000x-$BONE", address: "0x9763E377ce4E6767F7760D9E1FC7E3c2afBc9Cfb" },
+    { id: 9, name: "1000x-DOGSP", address: "0x0cC0D3382fC2826E18606C968842A91e5C52e2b3" },
+  ];
+
   useEffect(() => {
     fetchBalances();
-    const interval = setInterval(fetchBalances, 30000); // Refresh every 30 seconds
+    fetchTVLData();
+    const interval = setInterval(() => {
+      fetchBalances();
+      fetchTVLData();
+    }, 30000); // Refresh every 30 seconds
     return () => clearInterval(interval);
   }, []);
+
+  const fetchTVLData = async () => {
+    try {
+      setLoading(true);
+  
+      // Fetch MintMe price
+      const mintmePriceResponse = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`);
+      const mintmePriceData = mintmePriceResponse.data[coinId]?.usd;
+      if (mintmePriceData !== undefined) {
+        setMintmePrice(mintmePriceData);
+      } else {
+        throw new Error(`${coinId} price data is unavailable`);
+      }
+  
+      const provider = getProvider();
+      const signer = getSigner(provider);
+      const networkId = await getNetwork(provider);
+  
+      // Calculate price of $BONE in MintMe
+      const bonePool = POOLS.find(pool => pool.name === "$BONE-WMINT");
+      const boneReserves = await new Contract(bonePool.address, pairABI, signer).getReserves();
+      const boneReserve0 = boneReserves[0] / 10 ** BONE_TOKEN_DECIMALS;
+      const boneReserve1 = boneReserves[1] / 10 ** 18;
+      const boneInWMINT = getTokenPrice(boneReserve0, boneReserve1);
+      const bonePriceInMintMe = 1 / boneInWMINT;
+      const bonePriceInUSDTemp = bonePriceInMintMe * mintmePriceData;
+      setBonePriceInUSD(bonePriceInUSDTemp.toFixed(8));
+      setBonePrice(bonePriceInMintMe.toFixed(8));
+  
+      // Calculate TVL using the MintMe price
+      let tvl = 0;
+      for (const pool of POOLS) {
+        const poolReserves = await new Contract(pool.address, pairABI, signer).getReserves();
+        const reserve0 = poolReserves[0] / 10 ** 18;
+        const reserve1 = poolReserves[1] / 10 ** 18;
+  
+        const token0 = pool.name.split("-")[0];
+        const token1 = pool.name.split("-")[1];
+  
+        let token0ValueInUSD;
+        let token1ValueInUSD;
+        if (token0 === "WMINT") {
+          token0ValueInUSD = reserve0 * mintmePriceData;
+        } else if (token0 === "$BONE") {
+          token0ValueInUSD = reserve0 * bonePriceInUSDTemp;
+        } else {
+          token0ValueInUSD = reserve0;
+        }
+  
+        if (token1 === "WMINT") {
+          token1ValueInUSD = reserve1 * mintmePriceData;
+        } else if (token1 === "$BONE") {
+          token1ValueInUSD = reserve1 * bonePriceInUSDTemp;
+        } else {
+          token1ValueInUSD = reserve1;
+        }
+  
+        const poolTVL = token0ValueInUSD + token1ValueInUSD;
+        tvl += poolTVL;
+      }
+  
+      setTVLData(tvl.toFixed(2));
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching TVL data:", error);
+      setLoading(false);
+    }
+  };
+
+  const getTokenPrice = (reserve0, reserve1) => {
+    if (reserve0 === 0 || reserve1 === 0) {
+      return 0;
+    }
+    return reserve1 / reserve0;
+  };
 
   const fetchBalances = async () => {
     try {
@@ -313,6 +417,8 @@ export default function Stake() {
     return total > 0 ? (staked / total * 100).toFixed(2) : '0';
   }, [totalTokens, stakedAmount]);
 
+  
+
   return (
     <RootContainer maxWidth="lg">
       <TitleTypography variant="h3">$BONE Staking Dashboard</TitleTypography>
@@ -452,6 +558,16 @@ export default function Stake() {
               </Tooltip>
             </Grid>
             <Grid item xs={12} sm={6}>
+              <Tooltip title="Total Value Locked across all pools" arrow placement="top">
+                <Box>
+                  <Typography variant="subtitle1">Total Value Locked (TVL)</Typography>
+                  <BalanceTypography variant="h4">
+                    ${tvlData} <FontAwesomeIcon icon={faChartLine} size="sm" />
+                  </BalanceTypography>
+                </Box>
+              </Tooltip>
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <Tooltip title="Percentage of your tokens currently staked" arrow placement="top">
                 <Box>
                   <Typography variant="subtitle1">Your Staking Percentage</Typography>
@@ -461,6 +577,36 @@ export default function Stake() {
                 </Box>
               </Tooltip>
             </Grid>
+            <Grid item xs={12} sm={6}>
+            <Tooltip title="Current price of MintMe in USD" arrow placement="top">
+              <Box>
+                <Typography variant="subtitle1">MintMe Price (USD)</Typography>
+                <BalanceTypography variant="h4">
+                  ${mintmePrice || 'N/A'}
+                </BalanceTypography>
+              </Box>
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+        <Tooltip title="Current price of BONE in MintMe" arrow placement="top">
+          <Box>
+            <Typography variant="subtitle1">BONE Price (MintMe)</Typography>
+            <BalanceTypography variant="h4">
+              {bonePrice || 'N/A'} MINTME
+            </BalanceTypography>
+          </Box>
+        </Tooltip>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Tooltip title="Current price of BONE in USD" arrow placement="top">
+          <Box>
+            <Typography variant="subtitle1">BONE Price (USD)</Typography>
+            <BalanceTypography variant="h4">
+              ${bonePriceInUSD || 'N/A'}
+            </BalanceTypography>
+          </Box>
+        </Tooltip>
+      </Grid>
           </Grid>
         </StyledPaper>
       </Box>
