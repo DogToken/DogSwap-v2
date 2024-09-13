@@ -1,6 +1,6 @@
 {
   "name": "dogswap",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "private": false,
   "homepage": "https://dogswap.xyz/",
   "dependencies": {

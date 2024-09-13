@@ -79,7 +79,8 @@ const NavBar = () => {
       <div className="navbar-container">
         <div className="navbar-logo">
           <Link to="/" className="logo-link">
-            <span role="img" aria-label="dog">🐶</span> DogSwap
+            <img src="/images/ui/logo.png" alt="DogSwap Logo" className="logo-image" />
+              <span className="logo-text">DogSwap</span>
           </Link>
         </div>
         <div className="menu-icon" onClick={toggleMenu}>
@@ -139,13 +140,8 @@ const NavBar = () => {
                     <Typography>{formatAddress(userAddress)}</Typography>
                   </MenuItem>
                   <MenuItem>
-                    <Link to="/profile" className="user-menu-item">
-                      Profile
-                    </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link to="/transactions" className="user-menu-item">
-                      Transactions
+                    <Link to="/dash" className="user-menu-item">
+                      Dashboard
                     </Link>
                   </MenuItem>
                   <MenuItem onClick={disconnectWallet} className="disconnect-button">

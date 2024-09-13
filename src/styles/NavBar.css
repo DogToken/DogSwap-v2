@@ -216,3 +216,20 @@ body {
 .disconnect-button:hover {
   background-color: #ff1a1a;
 }
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 40px; /* Adjust the height as needed */
+  width: auto;
+  margin-right: 10px; /* Space between the image and text */
+}
+
+.logo-text {
+  font-size: 24px; /* Adjust the font size as needed */
+  font-weight: bold; /* Optional: make the text bold */
+}
+

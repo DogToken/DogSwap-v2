@@ -8,6 +8,12 @@ import Footer from "./Components/Footer/Footer";
 import CoinSwapper from "./pages/Swap";
 import Pools from "./pages/Pools";
 import Dash from "./pages/Dash";
+import Transactions from "./pages/Transactions";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Cookies from "./pages/Cookies";
+import Featured from "./Components/Pools/Featured";
+import FAQ from "./pages/FAQ"
 import { Route, Routes } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import Liquidity from "./pages/Liquidity";
@@ -44,6 +50,12 @@ const App = () => {
                   <Route path="/stake" element={<Stake network={network} />} />
                   <Route path="/pools" element={<Pools network={network} />} />
                   <Route path="/dash" element={<Dash network={network} />} />
+                  <Route path="/featured" element={<Featured network={network} />} />
+                  <Route path="/transactions" element={<Transactions network={network} />} />
+                  <Route path="/terms" element={<Terms network={network} />} />
+                  <Route path="/privacy" element={<Privacy network={network} />} />
+                  <Route path="/cookies" element={<Cookies network={network} />} />
+                  <Route path="/faq" element={<FAQ network={network} />} />
                   <Route path="*" element={<CoinSwapper network={network} />} />
                 </Routes>
                 <Footer />
