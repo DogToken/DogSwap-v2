@@ -4,9 +4,10 @@ import { MenuItems } from './MenuItems';
 import { ethers } from 'ethers';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { getBonePriceInUSD } from '../../utils/priceUtils';
-import './../../styles/NavBar.css';
+import '../../styles/NavBar.css';
 import { Avatar, Menu, MenuItem, Typography, IconButton } from '@mui/material';
-import defaultAvatar from './../../assets/images/defaultavatar.jpg';
+import defaultAvatar from '../../assets/images/defaultavatar.jpg';
+import NewsTickerComponent from './NewsTickerComponent';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,90 +76,93 @@ const NavBar = () => {
   };
 
   return (
-    <nav className={`navbar ${isOpen ? 'open' : ''}`}>
-      <div className="navbar-container">
-        <div className="navbar-logo">
-          <Link to="/" className="logo-link">
-            <img src="/images/ui/logo.png" alt="DogSwap Logo" className="logo-image" />
+    <>
+      <nav className={`navbar ${isOpen ? 'open' : ''}`}>
+        <div className="navbar-container">
+          <div className="navbar-logo">
+            <Link to="/" className="logo-link">
+              <img src="/images/ui/logo.png" alt="DogSwap Logo" className="logo-image" />
               <span className="logo-text">DogSwap</span>
-          </Link>
-        </div>
-        <div className="menu-icon" onClick={toggleMenu}>
-          {isOpen ? <FaTimes /> : <FaBars />}
-        </div>
-        <ul className={`nav-menu ${isOpen ? 'open' : ''}`}>
-          {MenuItems.map((item, index) => (
-            <li key={index} className="nav-item">
-              <Link className="nav-link" to={item.url}>
-                {item.title}
-              </Link>
-            </li>
-          ))}
-          {isConnected && (
-            <div className="connected-wallet">
-              <Typography variant="body1" sx={{ color: '#4a4a4a', marginRight: '1rem' }}>
-                1 🦴 = ${bonePriceInUSD} USD
-              </Typography>
+            </Link>
+          </div>
+          <div className="menu-icon" onClick={toggleMenu}>
+            {isOpen ? <FaTimes /> : <FaBars />}
+          </div>
+          <ul className={`nav-menu ${isOpen ? 'open' : ''}`}>
+            {MenuItems.map((item, index) => (
+              <li key={index} className="nav-item">
+                <Link className="nav-link" to={item.url}>
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+            {isConnected && (
+              <div className="connected-wallet">
+                <Typography variant="body1" sx={{ color: '#4a4a4a', marginRight: '1rem' }}>
+                  1 🦴 = ${bonePriceInUSD} USD
+                </Typography>
 
-              <div className="user-menu">
-                <IconButton
-                  onClick={handleUserMenuClick}
-                  sx={{
-                    p: 0,
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                    },
-                  }}
-                >
-                  <Avatar
-                    src={defaultAvatar}
-                    alt="User Avatar"
+                <div className="user-menu">
+                  <IconButton
+                    onClick={handleUserMenuClick}
                     sx={{
-                      cursor: 'pointer',
-                      width: 40,
-                      height: 40,
-                      border: '2px solid #6a9d6d',
-                      transition: 'border 0.3s ease',
+                      p: 0,
                       '&:hover': {
-                        border: '2px solid #4a4a4a',
+                        backgroundColor: 'transparent',
                       },
                     }}
-                  />
-                </IconButton>
-                <Menu
-                  anchorEl={showUserMenu}
-                  open={Boolean(showUserMenu)}
-                  onClose={handleUserMenuClose}
-                  PaperProps={{
-                    sx: {
-                      mt: 1,
-                      width: 220,
-                    },
-                  }}
-                >
-                  <MenuItem>
-                    <Typography>{formatAddress(userAddress)}</Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link to="/dash" className="user-menu-item">
-                      Dashboard
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={disconnectWallet} className="disconnect-button">
-                    Disconnect
-                  </MenuItem>
-                </Menu>
+                  >
+                    <Avatar
+                      src={defaultAvatar}
+                      alt="User Avatar"
+                      sx={{
+                        cursor: 'pointer',
+                        width: 40,
+                        height: 40,
+                        border: '2px solid #6a9d6d',
+                        transition: 'border 0.3s ease',
+                        '&:hover': {
+                          border: '2px solid #4a4a4a',
+                        },
+                      }}
+                    />
+                  </IconButton>
+                  <Menu
+                    anchorEl={showUserMenu}
+                    open={Boolean(showUserMenu)}
+                    onClose={handleUserMenuClose}
+                    PaperProps={{
+                      sx: {
+                        mt: 1,
+                        width: 220,
+                      },
+                    }}
+                  >
+                    <MenuItem>
+                      <Typography>{formatAddress(userAddress)}</Typography>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to="/dash" className="user-menu-item">
+                        Dashboard
+                      </Link>
+                    </MenuItem>
+                    <MenuItem onClick={disconnectWallet} className="disconnect-button">
+                      Disconnect
+                    </MenuItem>
+                  </Menu>
+                </div>
               </div>
-            </div>
-          )}
-          {!isConnected && (
-            <button className="connect-button" onClick={connectWallet}>
-              Connect Wallet
-            </button>
-          )}
-        </ul>
-      </div>
-    </nav>
+            )}
+            {!isConnected && (
+              <button className="connect-button" onClick={connectWallet}>
+                Connect Wallet
+              </button>
+            )}
+          </ul>
+        </div>
+      </nav>
+      <NewsTickerComponent />
+    </>
   );
 };
 
