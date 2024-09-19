@@ -8,9 +8,9 @@
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1100;
   transition: all 0.3s ease;
-  padding: 0 1rem;
+  padding: 10px 1rem;
   height: 60px;
   display: flex;
   align-items: center;
@@ -21,15 +21,18 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 1200px; /* Adjust based on your design */
+  max-width: 1200px;
   margin: 0 auto;
+  padding-bottom: 0;
 }
 
 /* Logo and link styles */
 .navbar-logo {
-  color: #6a9d6d;
+  color: #2c3e50;
   font-size: 1.5rem;
   font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .logo-link {
@@ -39,10 +42,22 @@
   align-items: center;
 }
 
+.logo-image {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+}
+
 .menu-icon {
   font-size: 1.5rem;
   cursor: pointer;
-  display: none; /* Hidden on larger screens */
+  display: none;
 }
 
 /* Navigation menu styles */
@@ -62,15 +77,16 @@
 
 .nav-link {
   text-decoration: none;
-  color: #4a4a4a;
+  color: #34495e;
   font-size: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Arial', sans-serif;
 }
 
 .nav-link:hover {
-  background-color: #6a9d6d;
+  background-color: #3498db;
   color: #ffffff;
 }
 
@@ -83,17 +99,18 @@
 .wallet-button {
   background: transparent;
   border: none;
-  color: #6a9d6d;
+  color: #3498db;
   font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   transition: color 0.3s ease;
+  font-family: 'Arial', sans-serif;
 }
 
 .wallet-button:hover {
-  color: #6a9d6d;
+  color: #2980b9;
 }
 
 .balances-dropdown {
@@ -111,11 +128,12 @@
 
 .balances-dropdown p {
   margin: 0;
+  font-family: 'Arial', sans-serif;
 }
 
 .disconnect-button,
 .connect-button {
-  background-color: #6a9d6d;
+  background-color: #3498db;
   color: #ffffff;
   border: none;
   padding: 0.5rem 1rem;
@@ -123,11 +141,66 @@
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease;
+  font-family: 'Arial', sans-serif;
 }
 
 .disconnect-button:hover,
 .connect-button:hover {
-  background-color: #6a9d6d;
+  background-color: #2980b9;
+}
+
+/* User menu styles */
+.user-menu {
+  position: relative;
+}
+
+.user-menu-button {
+  background: none;
+  border: none;
+  color: #34495e;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border: 1px solid #ecf0f1;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.user-menu-item {
+  display: block;
+  padding: 5px 10px;
+  color: #34495e;
+  text-decoration: none;
+  font-family: 'Arial', sans-serif;
+}
+
+.user-menu-item:hover {
+  background-color: #f7f9fa;
+}
+
+.disconnect-button {
+  width: 100%;
+  padding: 5px 10px;
+  margin-top: 10px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+}
+
+.disconnect-button:hover {
+  background-color: #c0392b;
 }
 
 /* Responsive styles */
@@ -164,72 +237,6 @@
 body {
   margin: 0;
   padding: 0;
-  padding-top: 75px; /* Adjust based on navbar height */
+  padding-top: 150px; /* Adjust based on navbar height */
+  font-family: 'Arial', sans-serif;
 }
-
-.user-menu {
-  position: relative;
-}
-
-.user-menu-button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.user-menu-dropdown {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 10px;
-  z-index: 1000;
-}
-
-.user-menu-item {
-  display: block;
-  padding: 5px 10px;
-  color: black;
-  text-decoration: none;
-}
-
-.user-menu-item:hover {
-  background-color: #f0f0f0;
-}
-
-.disconnect-button {
-  width: 100%;
-  padding: 5px 10px;
-  margin-top: 10px;
-  background-color: #ff4136;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.disconnect-button:hover {
-  background-color: #ff1a1a;
-}
-
-.navbar-logo {
-  display: flex;
-  align-items: center;
-}
-
-.logo-image {
-  height: 40px; /* Adjust the height as needed */
-  width: auto;
-  margin-right: 10px; /* Space between the image and text */
-}
-
-.logo-text {
-  font-size: 24px; /* Adjust the font size as needed */
-  font-weight: bold; /* Optional: make the text bold */
-}
-
