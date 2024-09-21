@@ -72,7 +72,7 @@
 
 /* Nav items styling */
 .nav-item {
-  position: relative;
+  position: relative; /* Needed for subnav positioning */
 }
 
 .nav-link {
@@ -86,6 +86,42 @@
 }
 
 .nav-link:hover {
+  background-color: #3498db;
+  color: #ffffff;
+}
+
+/* Sub-navigation styles */
+.subnav {
+  position: absolute; /* Positioning the subnav */
+  top: 100%; /* Positioned below the parent nav item */
+  left: 0;
+  background-color: #ffffff; /* Background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  padding: 0.5rem 0; /* Padding for spacing */
+  border-radius: 4px; /* Rounded corners */
+  z-index: 1000; /* Ensure it's above other elements */
+  display: none; /* Hidden by default */
+}
+
+.nav-item:hover .subnav {
+  display: block; /* Show subnav on hover */
+}
+
+.subnav-item {
+  padding: 0.5rem 1rem; /* Padding for subnav items */
+}
+
+.subnav-link {
+  text-decoration: none;
+  color: #34495e;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Arial', sans-serif;
+}
+
+.subnav-link:hover {
   background-color: #3498db;
   color: #ffffff;
 }

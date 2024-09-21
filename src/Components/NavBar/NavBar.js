@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { MenuItems } from './MenuItems';
+import { MenuItems } from './MenuItems'; // Ensure this includes main menu items
 import { ethers } from 'ethers';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { getBonePriceInUSD } from '../../utils/priceUtils';
@@ -15,6 +15,7 @@ const NavBar = () => {
   const [showUserMenu, setShowUserMenu] = useState(null);
   const [bonePriceInUSD, setBonePriceInUSD] = useState(0);
   const [userAddress, setUserAddress] = useState('');
+  const [activeMenu, setActiveMenu] = useState(null); // Track active menu item for subnav
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -90,10 +91,26 @@ const NavBar = () => {
           </div>
           <ul className={`nav-menu ${isOpen ? 'open' : ''}`}>
             {MenuItems.map((item, index) => (
-              <li key={index} className="nav-item">
+              <li
+                key={index}
+                className="nav-item"
+                onMouseEnter={() => setActiveMenu(index)} // Show subnav on hover
+                onMouseLeave={() => setActiveMenu(null)} // Hide subnav on mouse leave
+              >
                 <Link className="nav-link" to={item.url}>
                   {item.title}
                 </Link>
+                {activeMenu === index && item.subMenu && (
+                  <ul className="subnav">
+                    {item.subMenu.map((subItem, subIndex) => (
+                      <li key={subIndex} className="subnav-item">
+                        <Link className="subnav-link" to={subItem.url}>
+                          {subItem.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
             {isConnected && (

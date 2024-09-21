@@ -2,6 +2,7 @@ import React from "react";
 import "./styles/App.css";
 import ReactGA from 'react-ga4';
 import Web3Provider from "./utils/network";
+import Home from "./pages/Home";
 import NarBar from "./Components/NavBar/NavBar";
 import Stake from "./pages/Stake"
 import Footer from "./Components/Footer/Footer";
@@ -46,6 +47,7 @@ const App = () => {
                 <NarBar />
                 <Routes>
                   <Route path="/swap" element={<CoinSwapper network={network} />} />
+                  <Route path="/home" element={<Home network={network} />} />
                   <Route path="/liquidity" element={<Liquidity network={network} />} />
                   <Route path="/stake" element={<Stake network={network} />} />
                   <Route path="/pools" element={<Pools network={network} />} />
@@ -56,7 +58,7 @@ const App = () => {
                   <Route path="/privacy" element={<Privacy network={network} />} />
                   <Route path="/cookies" element={<Cookies network={network} />} />
                   <Route path="/faq" element={<FAQ network={network} />} />
-                  <Route path="*" element={<CoinSwapper network={network} />} />
+                  <Route path="*" element={<Home network={network} />} />
                 </Routes>
                 <Footer />
               </div>

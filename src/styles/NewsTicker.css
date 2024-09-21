@@ -24,11 +24,11 @@
     display: flex;
     flex-wrap: nowrap;
     width: auto;
-    animation: scroll-left 120s linear infinite; /* Slower scrolling */
+    animation: scroll-left 150s linear infinite; /* Slower scrolling */
 }
 
 .news-ticker-item {
-    padding: 10px 300px; /* Increased padding for more space between items */
+    padding: 10px 150px; /* Increased padding for more space between items */
     font-family: 'Arial', sans-serif;
     font-size: 14px;
     color: #34495e;
