@@ -8,7 +8,7 @@ import { styled } from '@mui/system';
 import { Contract, ethers } from 'ethers';
 import { getProvider, getSigner, getNetwork } from '../utils/ethereumFunctions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoins, faWallet, faHandHoldingUsd, faClock, faChartLine, faExchangeAlt, faPercent, faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faWallet, faHandHoldingUsd, faClock, faChartLine, faExchangeAlt, faPercent } from '@fortawesome/free-solid-svg-icons';
 import boneTokenABI from '../assets/abi/BoneToken.json';
 import masterChefABI from '../assets/abi/MasterChef.json';
 import axios from 'axios';

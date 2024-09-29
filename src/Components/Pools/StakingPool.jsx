@@ -1,37 +1,36 @@
-import React, { useState } from 'react';
-import { Button, Typography, CircularProgress, TextField, Card } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { 
+  Button, Typography, CircularProgress, TextField, Box, 
+  Dialog, DialogActions, DialogContent, DialogTitle, IconButton, 
+  Tooltip, InputAdornment
+} from '@mui/material';
 import { styled } from '@mui/system';
 import { Contract, ethers } from 'ethers';
 import { getProvider, getSigner } from '../../utils/ethereumFunctions';
 import boneTokenABI from "./../../assets/abi/IERC20.json";
 import masterChefABI from './../../assets/abi/MasterChef.json';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faArrowDown, faGift } from '@fortawesome/free-solid-svg-icons';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import RedeemIcon from '@mui/icons-material/Redeem';
 
 // Styled components
-const Root = styled(Card)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[2],
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'stretch',
-  maxWidth: '250px',
-  margin: 'auto',
+const ActionButton = styled(Button)(({ theme }) => ({
+  minWidth: '40px',
+  padding: theme.spacing(0.5),
 }));
 
-const ActionsContainer = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'stretch',
-  gap: theme.spacing(1),
-  marginTop: theme.spacing(2),
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
 }));
 
-const ButtonRow = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  gap: theme.spacing(1),
+const MaxButton = styled(Button)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+  minWidth: '60px',
 }));
 
 const StakingPool = ({ pool }) => {
@@ -39,7 +38,57 @@ const StakingPool = ({ pool }) => {
   
   const [loading, setLoading] = useState(false);
   const [stakingAmount, setStakingAmount] = useState('');
-  const [claimMessage, setClaimMessage] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [action, setAction] = useState('');
+  const [message, setMessage] = useState('');
+  const [maxAmount, setMaxAmount] = useState('0');
+
+  useEffect(() => {
+    if (dialogOpen) {
+      fetchMaxAmount();
+    }
+  }, [dialogOpen, action]);
+
+  const fetchMaxAmount = async () => {
+    try {
+      const provider = getProvider();
+      const signer = getSigner(provider);
+      const lpTokenContract = new Contract(lpTokenAddress, boneTokenABI, signer);
+      const masterChefContract = new Contract(MASTER_CHEF_ADDRESS, masterChefABI, signer);
+
+      let amount;
+      if (action === 'stake') {
+        amount = await lpTokenContract.balanceOf(signer.getAddress());
+      } else if (action === 'withdraw') {
+        const userInfo = await masterChefContract.userInfo(poolId, signer.getAddress());
+        amount = userInfo.amount;
+      } else {
+        amount = ethers.constants.Zero;
+      }
+
+      setMaxAmount(ethers.utils.formatUnits(amount, 18));
+    } catch (error) {
+      console.error('Error fetching max amount:', error);
+      setMaxAmount('0');
+    }
+  };
+
+  const handleOpenDialog = (actionType) => {
+    if (actionType !== 'claim') {
+      setAction(actionType);
+      setDialogOpen(true);
+      setStakingAmount('');
+      setMessage('');
+    } else {
+      handleClaimRewards();
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setStakingAmount('');
+    setMessage('');
+  };
 
   const handleStakeTokens = async () => {
     try {
@@ -61,10 +110,10 @@ const StakingPool = ({ pool }) => {
       const transaction = await masterChefContract.deposit(poolId, amountToStake, { value: 0 });
       await transaction.wait();
 
-      setClaimMessage('Tokens staked successfully!');
+      setMessage('Tokens staked successfully!');
     } catch (error) {
       console.error('Error staking tokens:', error);
-      setClaimMessage('Failed to stake tokens. Please try again later.');
+      setMessage('Failed to stake tokens. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -86,10 +135,10 @@ const StakingPool = ({ pool }) => {
       const transaction = await masterChefContract.withdraw(poolId, amountToWithdraw);
       await transaction.wait();
 
-      setClaimMessage('Tokens withdrawn successfully!');
+      setMessage('Tokens withdrawn successfully!');
     } catch (error) {
       console.error('Error withdrawing tokens:', error);
-      setClaimMessage('Failed to withdraw tokens. Please try again later.');
+      setMessage('Failed to withdraw tokens. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -106,63 +155,111 @@ const StakingPool = ({ pool }) => {
       const transaction = await masterChefContract.deposit(poolId, 0);  // 0 tokens deposited to claim rewards
       await transaction.wait();
 
-      setClaimMessage('Rewards claimed successfully!');
+      setMessage('Rewards claimed successfully!');
     } catch (error) {
       console.error('Error claiming rewards:', error);
-      setClaimMessage('Failed to claim rewards. Please try again later.');
+      setMessage('Failed to claim rewards. Please try again later.');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleAction = () => {
+    switch(action) {
+      case 'stake':
+        handleStakeTokens();
+        break;
+      case 'withdraw':
+        handleWithdrawTokens();
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleMaxClick = () => {
+    setStakingAmount(maxAmount);
+  };
+
   return (
-    <Root>
-      <TextField
-        label="Amount"
-        variant="outlined"
-        size="small"
-        margin="dense"
-        value={stakingAmount}
-        onChange={(e) => setStakingAmount(e.target.value)}
-        fullWidth
-      />
-      <ActionsContainer>
-        <ButtonRow>
-          <Button
+    <>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Tooltip title="Stake Tokens">
+          <ActionButton
             variant="contained"
             color="primary"
-            onClick={handleStakeTokens}
+            onClick={() => handleOpenDialog('stake')}
             disabled={loading}
-            sx={{ flex: 1 }}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : <FontAwesomeIcon icon={faArrowUp} />}
-          </Button>
-          <Button
+            <ArrowUpwardIcon fontSize="small" />
+          </ActionButton>
+        </Tooltip>
+        <Tooltip title="Withdraw Tokens">
+          <ActionButton
             variant="outlined"
             color="secondary"
-            onClick={handleWithdrawTokens}
+            onClick={() => handleOpenDialog('withdraw')}
             disabled={loading}
-            sx={{ flex: 1 }}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : <FontAwesomeIcon icon={faArrowDown} />}
+            <ArrowDownwardIcon fontSize="small" />
+          </ActionButton>
+        </Tooltip>
+        <Tooltip title="Claim Rewards">
+          <ActionButton
+            variant="contained"
+            color="success"
+            onClick={handleClaimRewards}
+            disabled={loading}
+          >
+            <RedeemIcon fontSize="small" />
+          </ActionButton>
+        </Tooltip>
+      </Box>
+
+      <StyledDialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>
+          {action === 'stake' ? 'Stake Tokens' : 'Withdraw Tokens'}
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Amount"
+            type="number"
+            fullWidth
+            variant="outlined"
+            value={stakingAmount}
+            onChange={(e) => setStakingAmount(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <MaxButton
+                    variant="outlined"
+                    size="small"
+                    onClick={handleMaxClick}
+                  >
+                    Max
+                  </MaxButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          {message && (
+            <Typography color={message.includes('success') ? 'success.main' : 'error.main'} variant="body2" sx={{ mt: 2 }}>
+              {message}
+            </Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
           </Button>
-        </ButtonRow>
-        <Button
-          variant="contained"
-          color="success"
-          onClick={handleClaimRewards}
-          disabled={loading}
-          fullWidth
-        >
-          {loading ? <CircularProgress size={24} color="inherit" /> : <FontAwesomeIcon icon={faGift} />}
-        </Button>
-      </ActionsContainer>
-      {claimMessage && (
-        <Typography variant="body2" color="textPrimary" sx={{ marginTop: 2 }}>
-          {claimMessage}
-        </Typography>
-      )}
-    </Root>
+          <Button onClick={handleAction} color="primary" disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : 'Confirm'}
+          </Button>
+        </DialogActions>
+      </StyledDialog>
+    </>
   );
 };
 

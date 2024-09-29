@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Grid, Typography, IconButton, Link, styled, useTheme, useMediaQuery } from '@mui/material';
-import { FaTwitter, FaDiscord, FaTelegram, FaGithub, FaXTwitter } from 'react-icons/fa6';
+import { FaDiscord, FaTelegram, FaGithub, FaXTwitter } from 'react-icons/fa6';
 import { IoMdPaw } from 'react-icons/io';
 
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -48,14 +48,6 @@ const StyledLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-const SocialButton = styled(IconButton)(({ theme }) => ({
-  color: '#555',
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    color: theme.palette.primary.main,
-    transform: 'translateY(-3px)',
-  },
-}));
 
 const SocialLink = styled('a')(({ theme }) => ({
   color: '#555',

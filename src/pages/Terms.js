@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import {
-  Container, Typography, Grid, Paper, Box, Button, Tooltip,
-  Snackbar, Alert, Slider, useTheme, useMediaQuery
+  Container, Typography, Paper, 
+  Snackbar, Alert, useTheme, useMediaQuery
 } from '@mui/material';
 import { styled } from '@mui/system';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 // Initialize Google Analytics for page tracking
 ReactGA.initialize('YOUR_GA_TRACKING_ID');
@@ -56,7 +54,6 @@ const SectionHeading = styled(Typography)(({ theme }) => ({
 
 const TermsAndConditions = () => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     // Track page view for Google Analytics

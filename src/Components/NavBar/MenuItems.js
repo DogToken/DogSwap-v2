@@ -19,7 +19,7 @@ export const MenuItems = [
     url: '/pools',
     subMenu: [
       { title: 'Featured', url: '/featured' },
-      { title: 'Weekly', url: '/Weekly' },
+      { title: 'Bone Pools', url: '/bonepools' },
     ],
   },
   {

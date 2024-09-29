@@ -23,7 +23,6 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-bottom: 0;
 }
 
 /* Logo and link styles */
@@ -95,9 +94,10 @@
   position: absolute; /* Positioning the subnav */
   top: 100%; /* Positioned below the parent nav item */
   left: 0;
+  width: 150px; /* Specify a width for subnav */
   background-color: #ffffff; /* Background color */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-  padding: 0.5rem 0; /* Padding for spacing */
+  padding: 0; /* Remove padding to avoid cutting off text */
   border-radius: 4px; /* Rounded corners */
   z-index: 1000; /* Ensure it's above other elements */
   display: none; /* Hidden by default */
@@ -109,6 +109,11 @@
 
 .subnav-item {
   padding: 0.5rem 1rem; /* Padding for subnav items */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.subnav-item:last-child {
+  margin-bottom: 0; /* Remove bottom margin on the last item */
 }
 
 .subnav-link {
@@ -119,6 +124,7 @@
   border-radius: 4px;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-family: 'Arial', sans-serif;
+  display: block; /* Ensure the link takes the full width */
 }
 
 .subnav-link:hover {
@@ -275,4 +281,14 @@ body {
   padding: 0;
   padding-top: 150px; /* Adjust based on navbar height */
   font-family: 'Arial', sans-serif;
+}
+
+ul {
+  list-style-type: none; /* Removes bullet points */
+  padding: 0; /* Removes default padding */
+  margin: 0; /* Removes default margin */
+}
+
+.subnav-item {
+  margin-bottom: 5px; /* Optional: adds spacing between subnav items */
 }

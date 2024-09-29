@@ -21,12 +21,6 @@ const MINTMECoins = [
     address: "0x9D8dd79F2d4ba9E1C3820d7659A5F5D2FA1C22eF",
     logoUrl: "https://dogswap.xyz/images/coins/bone.png",
   },
-  // {
-  //   name: "Bridged Bone",
-  //   abbr: "bBONE",
-  //   address: "0x46700A70314623D4F17561c237252Ff0F6bEe656",
-  //   logoUrl: "https://dogswap.xyz/images/coins/bone.png",
-  // },
   {
     name: "1000x",
     abbr: "1000X",
@@ -56,6 +50,12 @@ const MINTMECoins = [
     abbr: "ZAR",
     address: "0xa88bCa314ebe9301cBa3b4C718149b05D4AD0ea5",
     logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/a36d2a38-4f17-11ed-be77-ac162db679ce.png",
+  },
+  {
+    name: "D Club",
+    abbr: "DClub",
+    address: "0x7457a49688E2D7a2067694f687Ff87A3D10008B3",
+    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/f0e22c40-60e6-11ef-a94b-ac162db679ce.png",
   },
   {
     name: "Shells",
@@ -110,12 +110,6 @@ const MINTMECoins = [
     abbr: "SMILE",
     address: "0xe5a65FE59B03301C2409c6C5aDe432F44fa1eD0c",
     logoUrl: "https://dogswap.xyz/images/coins/smile.png",
-  },
-  {
-    name: "VEXE",
-    abbr: "VXE",
-    address: "0x54DAa721aaF6938cdc3c6c455A9C5400e9A9462e",
-    logoUrl: "https://dogswap.xyz/images/coins/vexe.png",
   },
   {
     name: "Zenny",

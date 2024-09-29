@@ -5,6 +5,64 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2024-09-29 
+
+### Public Release
+
+- The main website "https://dogswap.xyz" will be moved to "https://old.dogswap.xyz"
+- The beta will be moved from "https://beta.dogswap.xyz" to "https://dogswap.xyz" acting as the new frontpage.
+
+### New Features
+
+- Admin Dashboard (Permissioned)
+- Bone Pools (Seperate Page)
+- Weekly Pools (Added to pools)
+- Active / Inactive Pools
+
+### Changes
+
+- Profile Dashboard split into components
+- Coinlist altered to original
+- Featured Pool has altered UI & Project link added
+- Frontpage editing to match DogSwap functions
+- Bone Pools have 10% fee if unused and no rewards
+- Deposit / Withdraw / Claim buttons updated
+- Pool (in)activity and visible listing
+- Pools UI improved with hider, section select
+
+### Bugfixes
+
+- Tooltip on Profile Dashboard is fixed due to component loading
+- Navbar subnav ul UI change (CSS)
+- Redundant code removal
+- Images on the highlight adjusted (still needs new images)
+
+## [2.1.5] - 2024-09-21
+
+### New Features
+
+- Homepage
+- Ticker
+
+### Changes
+
+- Navbar change (Added Home & Ticker)
+- Homepage changes
+- Main page is now Homepage
+- More visibility for the featured pool
+- URL creation & localisation old.dogswap
+- Featured Page enhancement
+- Navbar functionality (add subnav)
+
+### New Files
+
+- Home / Components
+- FeaturedPool page
+
+### Bugfixes
+
+- Ticker bug
+
 ## [2.1.4] - 2024-09-14
 
 ### New Features

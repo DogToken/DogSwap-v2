@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga4';
 import {
   Container, Typography, Paper, Accordion, AccordionSummary, AccordionDetails,
-  Box, Button, Tooltip, Snackbar, Alert, Slider, useTheme, useMediaQuery
+ Snackbar, Alert, useTheme, useMediaQuery
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/system';
 
 // Initialize Google Analytics for page tracking
-ReactGA.initialize('YOUR_GA_TRACKING_ID');
+ReactGA.initialize('G-823N1D2MNZ');
 
 // Custom styled components
 const StyledContainer = styled(Container)(({ theme }) => ({

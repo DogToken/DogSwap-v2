@@ -13,6 +13,8 @@ import Transactions from "./pages/Transactions";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
+import Control from "./pages/Control";
+import BonePools from "./pages/BonePools";
 import Featured from "./Components/Pools/Featured";
 import FAQ from "./pages/FAQ"
 import { Route, Routes } from "react-router-dom";
@@ -35,7 +37,6 @@ const theme = createTheme({
 
 const App = () => {
   ReactGA.initialize('G-823N1D2MNZ');
-  ReactGA.send({ hitType: "pageview", page: "/swap", title: "Swap Page" });
   
   return (
     <div className="App">
@@ -58,6 +59,8 @@ const App = () => {
                   <Route path="/privacy" element={<Privacy network={network} />} />
                   <Route path="/cookies" element={<Cookies network={network} />} />
                   <Route path="/faq" element={<FAQ network={network} />} />
+                  <Route path="/control" element={<Control network={network} />} />
+                  <Route path="/bonepools" element={<BonePools network={network} />} />
                   <Route path="*" element={<Home network={network} />} />
                 </Routes>
                 <Footer />

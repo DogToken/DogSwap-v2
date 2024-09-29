@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import {
-  Container, Typography, Paper, Box, Button, Tooltip,
-  Snackbar, Alert, Slider, useTheme, useMediaQuery
+  Container, Typography, Paper,
+  Snackbar, Alert, useTheme, useMediaQuery
 } from '@mui/material';
 import { styled } from '@mui/system';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCookieBite } from '@fortawesome/free-solid-svg-icons';
 
 // Initialize Google Analytics for page tracking
-ReactGA.initialize('YOUR_GA_TRACKING_ID');
+ReactGA.initialize('G-823N1D2MNZ');
 
 // Custom styled components
 const StyledContainer = styled(Container)(({ theme }) => ({

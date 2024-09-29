@@ -1,79 +1,55 @@
 import React from 'react';
-import { Box, Typography, Button, Container, Grid, Grid2, Card, CardHeader, CardContent, Avatar, Stack } from '@mui/material';
-import { styled, useTheme } from '@mui/system';
-import AutoFixHighRoundedIcon from '@mui/icons-material/AutoFixHighRounded';
-import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
-import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
-import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
-import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import { Box, Typography, Container, Grid, Card, Stack } from '@mui/material';
+import { styled } from '@mui/system';
+import SwapHorizRoundedIcon from '@mui/icons-material/SwapHorizRounded';
+import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
+import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
+import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
+import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import Features from '../Components/Home/Features';
 import Hero from '../Components/Home/Hero';
 import FAQ from '../Components/Home/FAQ';
 
 // Custom styled components
-const StyledContainer = styled(Container)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100vh',
-  textAlign: 'center',
-  backgroundColor: 'rgba(255, 255, 255, 0.8)', // Transparent background
-  padding: theme.spacing(4),
-  borderRadius: '8px',
-}));
-
-const BackgroundImage = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  top: '10%',
-  left: '50%',
-  transform: 'translate(-50%, -10%)',
-  zIndex: -1,
-  width: '200px',
-  height: '200px',
-  backgroundImage: 'url("/path-to-your-image.png")', // Set the background image here
-  backgroundSize: 'contain',
-  backgroundRepeat: 'no-repeat',
-}));
 
 const Highlights = () => {
   const items = [
     {
-      icon: <SettingsSuggestRoundedIcon />,
-      title: 'Adaptable performance',
+      icon: <SwapHorizRoundedIcon />,
+      title: 'Seamless Token Swaps',
       description:
-        'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+        'Trade tokens with ease on DogSwap, benefiting from fast, secure, and transparent swaps powered by DeFi innovation.',
     },
     {
-      icon: <ConstructionRoundedIcon />,
-      title: 'Built to last',
+      icon: <MonetizationOnRoundedIcon />,
+      title: 'Earn with Liquidity',
       description:
-        'Experience unmatched durability that goes above and beyond with lasting investment.',
+        'Provide liquidity and earn rewards in BONE while helping build a more liquid and accessible DeFi ecosystem.',
     },
     {
-      icon: <ThumbUpAltRoundedIcon />,
-      title: 'Great user experience',
+      icon: <LockRoundedIcon />,
+      title: 'Secure and Trusted',
       description:
-        'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+        'Security is our top priority. Your assets and data are protected through industry-standard security practices.',
     },
     {
-      icon: <AutoFixHighRoundedIcon />,
-      title: 'Innovative functionality',
+      icon: <TrendingUpRoundedIcon />,
+      title: 'Stake and Grow',
       description:
-        'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
+        'Maximize your earnings by staking BONE and participating in governance to shape the future of DogSwap.',
     },
     {
-      icon: <SupportAgentRoundedIcon />,
-      title: 'Reliable support',
+      icon: <SupportRoundedIcon />,
+      title: '24/7 Community Support',
       description:
-        'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
+        'Our dedicated team and active community are always here to support your DogSwap journey, no matter where you are.',
     },
     {
-      icon: <QueryStatsRoundedIcon />,
-      title: 'Precision in every detail',
+      icon: <InsightsRoundedIcon />,
+      title: 'Data-Driven Insights',
       description:
-        'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
+        'Make informed decisions with real-time insights and analytics, empowering you to navigate the DeFi space with confidence.',
     },
   ];
 

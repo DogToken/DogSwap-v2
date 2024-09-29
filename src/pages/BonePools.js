@@ -3,13 +3,12 @@ import ReactGA from 'react-ga4';
 import { 
   Alert, AlertTitle, Container, Typography, Table, TableBody, TableCell, 
   TableContainer, TableHead, TableRow, Paper, Box, Avatar, Chip,
-  FormControlLabel, Switch, Tooltip, IconButton, CircularProgress,
-  Tabs, Tab
+  FormControlLabel, Switch, Tooltip, IconButton, CircularProgress
 } from '@mui/material';
 import { styled } from '@mui/system';
 import InfoIcon from '@mui/icons-material/Info';
 import StakingPool from '../Components/Pools/StakingPool';
-import { poolData } from '../constants/poolData';
+import { poolData } from '../constants/weeklyPoolData';
 import { getProvider, getSigner } from '../utils/ethereumFunctions';
 import { Contract, ethers } from 'ethers';
 import boneTokenABI from "../assets/abi/IERC20.json";
@@ -94,10 +93,6 @@ const StatusChipContainer = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(0.5),
 }));
 
-const StyledTabs = styled(Tabs)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-}));
-
 const FeeChip = styled(Chip)(({ theme }) => ({
   marginLeft: theme.spacing(1),
   backgroundColor: theme.palette.info.light,
@@ -108,7 +103,6 @@ const Pools = () => {
   const [poolsData, setPoolsData] = useState([]);
   const [hideInactive, setHideInactive] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentView, setCurrentView] = useState('fixed');
 
   useEffect(() => {
     fetchAllPoolsData();
@@ -160,11 +154,7 @@ const Pools = () => {
     });
   };
 
-  const filteredPools = poolsData.filter(pool => (!hideInactive || pool.isActive) && pool.poolType.toLowerCase() === currentView);
-
-  const handleChangeView = (event, newValue) => {
-    setCurrentView(newValue);
-  };
+  const filteredPools = poolsData.filter(pool => !hideInactive || pool.isActive);
 
   if (isLoading) {
     return (
@@ -177,7 +167,7 @@ const Pools = () => {
   return (
     <RootContainer maxWidth="lg">
       <Header>
-        <TitleTypography variant="h4">Reward Pools</TitleTypography>
+        <TitleTypography variant="h4">Bone Pools</TitleTypography>
         <FormControlLabel
           control={
             <Switch
@@ -191,16 +181,9 @@ const Pools = () => {
         />
       </Header>
 
-      <StyledTabs value={currentView} onChange={handleChangeView} centered>
-        <Tab label="Fixed Pools" value="fixed" />
-        <Tab label="Community Pools" value="community" />
-        <Tab label="Weekly Pools" value="weekly" />
-      </StyledTabs>
-
       {filteredPools.length === 0 ? (
         <Alert severity="info">
-          <AlertTitle>No Pools Available</AlertTitle>
-          No {currentView} pools available at the moment. Please check back later or try a different pool type.
+          No active pools available at the moment. Please check back later.
         </Alert>
       ) : (
         <StyledTableContainer component={Paper}>
@@ -219,32 +202,32 @@ const Pools = () => {
                 <TableRow key={index}>
                   <StyledTableCell>
                     <Box display="flex" alignItems="center">
-                      <LogoContainer>
-                        <Avatar src={pool.imageTokenA} alt="Token A" sx={{ width: 28, height: 28 }} />
-                        <OverlappingAvatar src={pool.imageTokenB} alt="Token B" />
-                      </LogoContainer>
-                      <PoolInfoContainer>
-                        <Typography variant="subtitle2">{pool.title}</Typography>
-                        <Typography variant="caption" color="textSecondary">{pool.subTitle}</Typography>
-                        <StatusChipContainer>
-                          <StatusChip
-                            label={pool.isActive ? "Active" : "Inactive"}
-                            size="small"
-                            isActive={pool.isActive}
-                          />
-                          <FeeChip
-                            label={`${pool.fee}% Fee`}
-                            size="small"
-                          />
-                          {!pool.isActive && (
-                            <Tooltip title="This pool is inactive. A 10% fee applies and rewards are turned off.">
-                              <IconButton size="small" color="warning">
-                                <InfoIcon fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
-                          )}
-                        </StatusChipContainer>
-                      </PoolInfoContainer>
+                    <LogoContainer>
+                      <Avatar src={pool.imageTokenA} alt="Token A" sx={{ width: 28, height: 28 }} />
+                      <OverlappingAvatar src={pool.imageTokenB} alt="Token B" />
+                    </LogoContainer>
+                    <PoolInfoContainer>
+                      <Typography variant="subtitle2">{pool.title}</Typography>
+                      <Typography variant="caption" color="textSecondary">{pool.subTitle}</Typography>
+                      <StatusChipContainer>
+                        <StatusChip
+                          label={pool.isActive ? "Active" : "Inactive"}
+                          size="small"
+                          isActive={pool.isActive}
+                        />
+                        <FeeChip
+                          label={`${pool.fee}% Fee`}
+                          size="small"
+                        />
+                        {!pool.isActive && (
+                          <Tooltip title="This pool is inactive. A 10% fee applies and rewards are turned off.">
+                            <IconButton size="small" color="warning">
+                              <InfoIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                      </StatusChipContainer>
+                    </PoolInfoContainer>
                     </Box>
                   </StyledTableCell>
                   <StyledTableCell align="right">{pool.walletBalance}</StyledTableCell>

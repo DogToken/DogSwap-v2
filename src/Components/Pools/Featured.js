@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga4';
-import { Container, Typography, Box, Avatar, Button } from '@mui/material';
+import { Container, Typography, Box, Avatar, Link as MuiLink } from '@mui/material';
 import { styled } from '@mui/system';
 import StakingPool from './FeaturedPool';
 import { poolData } from '../../constants/featuredPool';
@@ -12,7 +12,7 @@ import masterChefABI from '../../assets/abi/MasterChef.json';
 // Styled components
 const RootContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(4),
-  backgroundColor: 'white', // Ensure the background is white
+  backgroundColor: 'white',
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
@@ -24,7 +24,7 @@ const TitleTypography = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   color: theme.palette.primary.main,
   textAlign: 'center',
-  fontSize: '2rem',
+  fontSize: '2.5rem',
 }));
 
 const LogoContainer = styled(Box)(({ theme }) => ({
@@ -38,6 +38,28 @@ const TokenAvatar = styled(Avatar)(({ theme }) => ({
   width: 64,
   height: 64,
   margin: theme.spacing(1),
+  border: `2px solid ${theme.palette.primary.main}`,
+  boxShadow: theme.shadows[2],
+}));
+
+const SubTitleTypography = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  textAlign: 'center',
+  fontSize: '1.25rem',
+  color: theme.palette.text.secondary,
+  lineHeight: 1.5,
+  padding: theme.spacing(0, 2),
+}));
+
+const ProjectLink = styled(MuiLink)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  fontSize: '1.125rem',
+  fontWeight: 'bold',
+  color: theme.palette.primary.main,
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
 }));
 
 const DetailContainer = styled(Box)(({ theme }) => ({
@@ -45,19 +67,23 @@ const DetailContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-around',
   width: '100%',
   margin: theme.spacing(2, 0),
+  backgroundColor: 'rgba(240, 240, 240, 0.7)',
+  borderRadius: theme.shape.borderRadius,
+  padding: theme.spacing(2),
+  boxShadow: theme.shadows[3],
 }));
 
 const DetailItem = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1),
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: 'transparent', // Remove background
+  flex: '1',
+  margin: theme.spacing(0, 1),
   textAlign: 'center',
-  flex: '1', // Equal flex for all items
-  margin: theme.spacing(0, 1), // Add margin between items
 }));
 
 const DetailsTypography = styled(Typography)(({ theme }) => ({
   fontSize: '1rem',
+  fontWeight: '500',
+  color: theme.palette.text.primary,
 }));
 
 const Featured = () => {
@@ -75,13 +101,13 @@ const Featured = () => {
     const masterChefContract = new Contract(pool.MASTER_CHEF_ADDRESS, masterChefABI, provider);
 
     try {
-      const walletBalance = await lpTokenContract.balanceOf(signer.getAddress());
+      const walletBalance = await lpTokenContract.balanceOf(await signer.getAddress());
       const formattedWalletBalance = ethers.utils.formatUnits(walletBalance, 18);
 
-      const userInfo = await masterChefContract.userInfo(pool.poolId, signer.getAddress());
+      const userInfo = await masterChefContract.userInfo(pool.poolId, await signer.getAddress());
       const formattedStakedAmount = ethers.utils.formatUnits(userInfo.amount, 18);
 
-      const pendingRewards = await masterChefContract.pendingBone(pool.poolId, signer.getAddress());
+      const pendingRewards = await masterChefContract.pendingBone(pool.poolId, await signer.getAddress());
       const formattedPendingRewards = ethers.utils.formatUnits(pendingRewards, 18);
 
       setPoolDataItem({
@@ -105,6 +131,11 @@ const Featured = () => {
 
   if (!poolDataItem) return <Typography variant="h6">Loading...</Typography>;
 
+  // Split the subtitle into an array of lines
+  const subtitleLines = poolDataItem.subTitle.split('\n').map((line, index) => (
+    <Typography key={index} variant="body1">{line}</Typography>
+  ));
+
   return (
     <RootContainer maxWidth="lg">
       <TitleTypography variant="h3">Featured Pool</TitleTypography>
@@ -113,9 +144,13 @@ const Featured = () => {
         <TokenAvatar src={poolDataItem.imageTokenB} alt="Token B" />
       </LogoContainer>
       <Typography variant="h5">{poolDataItem.title}</Typography>
-      <Typography variant="body1" color="textSecondary" style={{ marginBottom: '1rem', textAlign: 'center' }}>
-        {poolDataItem.subTitle}
-      </Typography>
+      <SubTitleTypography>{subtitleLines}</SubTitleTypography>
+      
+      {/* Project Link */}
+      <ProjectLink href={poolDataItem.projectLink} target="_blank" rel="noopener noreferrer">
+        Visit Project
+      </ProjectLink>
+
       <DetailContainer>
         <DetailItem>
           <DetailsTypography>Wallet Balance:</DetailsTypography>
