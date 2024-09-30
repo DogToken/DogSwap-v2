@@ -67,6 +67,7 @@ const ConnectWalletPage = () => {
       });
       setWrongNetwork(false);
     } catch (switchError) {
+      // If the chain has not been added to the wallet, request to add it
       if (switchError.code === 4902) {
         try {
           await window.ethereum.request({
@@ -76,6 +77,12 @@ const ConnectWalletPage = () => {
                 chainId: chainIdHex,
                 chainName: desiredNetworkName,
                 rpcUrls: [rpcUrl],
+                nativeCurrency: {
+                  name: "MintMe Coin", // Replace with the actual name
+                  symbol: "MINTME", // Replace with the actual symbol (e.g., ETH for Ethereum)
+                  decimals: 18, // Typically 18 decimals
+                },
+                blockExplorerUrls: ["https://mintme.com/explorer"], // Optional: URL of a block explorer
               },
             ],
           });
@@ -88,6 +95,7 @@ const ConnectWalletPage = () => {
       }
     }
   };
+  
 
   return (
     <div>

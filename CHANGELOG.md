@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2024-09-30 
+
+### Changes
+
+- On the Dash, token names now link to their respective mintme url
+
+### BonePools Activated
+
+- bobdubbloon (also listed)
+- Dance And Music
+
+### Bugfixes
+
+- If the mintme chain is not in your wallet, a request will be made when connecting first.
+
 ## [2.2.0] - 2024-09-29 
 
 ### Public Release

@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   Typography, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, Box, IconButton, Tooltip,
-  Link
+  TableHead, TableRow, Paper, Box, IconButton, Tooltip, Link
 } from '@mui/material';
 import {
   ContentCopy as ContentCopyIcon,
@@ -34,7 +33,15 @@ const TokenBalances = ({ tokens, isLoading, handleCopy }) => (
                   <TableCell>
                     <Box display="flex" alignItems="center">
                       <img src={token.image} alt={token.symbol} style={{ width: 24, height: 24, marginRight: 8 }} />
-                      {token.symbol}
+                      <Link
+                        href={token.url} // Assuming token.url exists for the token page link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                        sx={{ fontWeight: 'bold', color: 'primary.main' }}
+                      >
+                        {token.symbol}
+                      </Link>
                     </Box>
                   </TableCell>
                   <TableCell>{token.balance}</TableCell>

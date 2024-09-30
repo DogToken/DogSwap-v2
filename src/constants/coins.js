@@ -88,6 +88,12 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/xatter.jpeg",
   },
   {
+    name: "bobdubbloon",
+    abbr: "bobdub",
+    address: "0x2f9C7A6ff391d0b6D5105F8e37F2050649482c75",
+    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/d5c1e72a-424b-11ef-a3ce-78e3b517e592.jpeg",
+  },
+  {
     name: "BitMonky",
     abbr: "BITM",
     address: "0x3Eb5Ea03039450621500a7481525494c33d2aa0A",
