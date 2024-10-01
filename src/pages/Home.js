@@ -10,6 +10,7 @@ import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import Features from '../Components/Home/Features';
 import Hero from '../Components/Home/Hero';
 import FAQ from '../Components/Home/FAQ';
+import About from '../Components/Home/About';
 
 // Custom styled components
 

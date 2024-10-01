@@ -1,131 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Button,
   Dialog,
-  DialogTitle as MuiDialogTitle,
-  DialogActions as MuiDialogActions,
-  Grid,
+  DialogTitle,
+  DialogContent,
   IconButton,
   TextField,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Avatar,
   Typography,
-  styled,
-  Card,
-  CardContent,
-  CardMedia,
+  Button,
+  Box,
+  Divider,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import PropTypes from 'prop-types';
-import * as COLORS from '@mui/material/colors';
-import COINS from '../../constants/coins';
+import SearchIcon from '@mui/icons-material/Search';
 import { ethers } from 'ethers';
 import { doesTokenExist } from '../../utils/ethereumFunctions';
+import COINS from '../../constants/coins';
 
-// Styled Dialog Container
-const DialogContainer = styled(Dialog)(({ theme }) => ({
-  borderRadius: theme.spacing(2),
-  backgroundColor: '#89b290',
-  '& .MuiDialogContent-root': {
-    padding: 0,
-  },
-  '& .MuiPaper-root': {
-    borderRadius: theme.spacing(2),
-    backgroundColor: '#89b290',
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialog-paper': {
+    borderRadius: theme.shape.borderRadius * 2,
+    maxWidth: 400,
+    width: '100%',
   },
 }));
 
-// Styled DialogTitle
-const CustomDialogTitle = styled(MuiDialogTitle)(({ theme }) => ({
-  padding: theme.spacing(2),
+const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  borderBottom: `1px solid ${COLORS.grey[300]}`,
-  backgroundColor: '#6a9d6d',
-  borderTopLeftRadius: theme.spacing(2),
-  borderTopRightRadius: theme.spacing(2),
 }));
 
-// Styled DialogActions
-const CustomDialogActions = styled(MuiDialogActions)(({ theme }) => ({
-  margin: 0,
-  padding: theme.spacing(1),
-  backgroundColor: '#6a9d6d',
-  borderBottomLeftRadius: theme.spacing(2),
-  borderBottomRightRadius: theme.spacing(2),
-}));
-
-// Styled Container for Coin List
-const CoinContainer = styled('div')(({ theme }) => ({
-  padding: theme.spacing(2),
-  maxHeight: '300px',
-  overflowY: 'auto',
-  backgroundColor: '#d2e2d1',
-  borderRadius: theme.spacing(1),
-}));
-
-// Styled Card for Coin Items
-const CoinCard = styled(Card)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: theme.spacing(1),
-  borderRadius: theme.spacing(1),
-  boxShadow: `0px 4px 8px ${COLORS.grey[400]}`,
-  cursor: 'pointer',
-  padding: theme.spacing(1),
-  '&:hover': {
-    boxShadow: `0px 8px 16px ${COLORS.grey[500]}`,
+const StyledList = styled(List)(({ theme }) => ({
+  maxHeight: 300,
+  overflow: 'auto',
+  '& .MuiListItem-root': {
+    transition: theme.transitions.create(['background-color', 'box-shadow']),
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+      boxShadow: theme.shadows[1],
+    },
   },
 }));
 
-// Styled CardMedia for Coin Logo
-const CoinCardMedia = styled(CardMedia)(({ theme }) => ({
-  width: 50,
-  height: 50,
-  borderRadius: '50%',
-  marginRight: theme.spacing(2),
-  backgroundColor: '#fff',
-}));
-
-// Styled CardContent for Coin Details
-const CoinCardContent = styled(CardContent)(({ theme }) => ({
-  padding: theme.spacing(1),
-  flex: 1,
-  '&:last-child': {
-    paddingBottom: theme.spacing(1),
-  },
-}));
-
-// Styled TextField for Address Input
-const AddressTextField = styled(TextField)(({ theme }) => ({
-  margin: theme.spacing(2, 0),
-}));
-
-function CoinDialog({ onClose, open, coins, signer }) {
+const CoinDialog = ({ onClose, open, coins, signer }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredCoins, setFilteredCoins] = useState([]);
   const [address, setAddress] = useState('');
   const [error, setError] = useState('');
 
-  const isValidAddress = (address) => {
-    return ethers.utils.isAddress(address);
+  useEffect(() => {
+    setFilteredCoins(
+      coins.filter(
+        (coin) =>
+          coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          coin.abbr.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [searchTerm, coins]);
+
+  const handleSelectCoin = async (coin) => {
+    await addTokenToWallet(coin.address);
+    onClose(coin.address);
   };
 
-  const submit = async () => {
+  const handleCustomAddressSubmit = async () => {
     setError('');
-
-    if (address.trim() === '') {
-      setError('Address cannot be empty');
-      return;
-    }
-
-    if (!isValidAddress(address)) {
+    if (!ethers.utils.isAddress(address)) {
       setError('Invalid Ethereum address');
       return;
     }
 
     try {
       if (await doesTokenExist(address, signer)) {
-        exit(address);
+        await addTokenToWallet(address);
+        onClose(address);
       } else {
-        setError('This address is not valid');
+        setError('This address is not a valid token');
       }
     } catch (e) {
       console.error('Error:', e);
@@ -133,7 +91,7 @@ function CoinDialog({ onClose, open, coins, signer }) {
     }
   };
 
-  const exit = async (value) => {
+  const addTokenToWallet = async (value) => {
     const coinCanAdd = COINS.get(window.chainId);
     if (coinCanAdd && window.ethereum) {
       const info = coinCanAdd.find((x) => x.address === value);
@@ -157,82 +115,80 @@ function CoinDialog({ onClose, open, coins, signer }) {
           }
         } catch (error) {
           console.error('Error adding asset:', error);
-          setError('Failed to add asset to wallet');
         }
       }
     }
-    setAddress('');
-    onClose(value);
   };
 
   return (
-    <DialogContainer
-      open={open}
-      onClose={() => exit(undefined)}
-      fullWidth
-      maxWidth="sm"
-    >
-      <CustomDialogTitle>
-        <Typography variant="h6" sx={{ color: 'white' }}>
-          Select Coin
-        </Typography>
-        <IconButton aria-label="close" onClick={() => exit(undefined)}>
-          <CloseIcon sx={{ color: 'white' }} />
+    <StyledDialog open={open} onClose={() => onClose()} fullWidth>
+      <StyledDialogTitle>
+        Select Coin
+        <IconButton
+          aria-label="close"
+          onClick={() => onClose()}
+          sx={{ color: (theme) => theme.palette.primary.contrastText }}
+        >
+          <CloseIcon />
         </IconButton>
-      </CustomDialogTitle>
-
-      <CoinContainer>
-        <AddressTextField
+      </StyledDialogTitle>
+      <DialogContent>
+        <Box sx={{ my: 2 }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search coins..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            InputProps={{
+              startAdornment: <SearchIcon color="action" />,
+            }}
+          />
+        </Box>
+        <StyledList>
+          {filteredCoins.map((coin) => (
+            <ListItem
+              key={coin.address}
+              button
+              onClick={() => handleSelectCoin(coin)}
+            >
+              <ListItemAvatar>
+                <Avatar src={coin.logoUrl} alt={coin.name}>
+                  {coin.abbr[0]}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={coin.abbr}
+                secondary={coin.name}
+              />
+            </ListItem>
+          ))}
+        </StyledList>
+        <Divider sx={{ my: 2 }} />
+        <Typography variant="subtitle1" gutterBottom>
+          Add Custom Token
+        </Typography>
+        <TextField
+          fullWidth
+          variant="outlined"
+          placeholder="Custom token address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          variant="outlined"
-          placeholder="Paste Address"
           error={!!error}
           helperText={error}
-          fullWidth
+          sx={{ mb: 2 }}
         />
-        <Grid container direction="column" spacing={1}>
-          {coins.map((coin, index) => (
-            <Grid item key={index}>
-              <CoinCard onClick={() => exit(coin.address)}>
-                <CoinCardMedia
-                  component="img"
-                  image={coin.logoUrl}
-                  alt={coin.name}
-                />
-                <CoinCardContent>
-                  <Typography variant="body1">{coin.abbr}</Typography> {/* Changed from h6 to body1 */}
-                  <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                    {coin.name}
-                  </Typography>
-                </CoinCardContent>
-              </CoinCard>
-            </Grid>
-          ))}
-        </Grid>
-      </CoinContainer>
-
-      <CustomDialogActions>
-        <Button autoFocus onClick={submit} color="primary">
-          Enter
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={handleCustomAddressSubmit}
+        >
+          Add Custom Token
         </Button>
-      </CustomDialogActions>
-    </DialogContainer>
+      </DialogContent>
+    </StyledDialog>
   );
-}
-
-CoinDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  coins: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      abbr: PropTypes.string.isRequired,
-      address: PropTypes.string.isRequired,
-      logoUrl: PropTypes.string,
-    })
-  ).isRequired,
-  signer: PropTypes.object,
 };
 
 export default CoinDialog;

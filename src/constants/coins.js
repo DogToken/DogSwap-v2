@@ -82,7 +82,7 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/tree.jpeg",
   },
   {
-    name: "Xatter",
+    name: "XatteR",
     abbr: "XTR",
     address: "0xB580f1dbA1c17882Fca8f6DDadA8428c9cB177fC",
     logoUrl: "https://dogswap.xyz/images/coins/xatter.jpeg",

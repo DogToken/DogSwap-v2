@@ -1,6 +1,6 @@
 export const poolData = [
     {
-        title: "MintMe / Xatter",
+        title: "MintMe / XatteR",
         subTitle: "Woof woof! 🐾 Let me tell you about XatteR, the mighty token powering up the Ancient Beast game! 🐉 \n\n \
         This token isn’t just for fetching treats—it's all about securing funding to keep the game fresh and fur-ocious! 🐺 \n\n \
         With XTR, you can lead the pack: vote on project direction, tip your fellow beasts in Discord, and even snag yourself some pawsome roles! 🎨🐾 \n\n \

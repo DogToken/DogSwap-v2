@@ -1,48 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Paper, Typography, Button, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
-
-// Styled Paper container with custom theme
-const PaperContainer = styled(Paper)(({ theme }) => ({
-  borderRadius: theme.spacing(2),
-  padding: theme.spacing(3),
-  maxWidth: 700,
-  margin: "auto",
-  marginTop: theme.spacing(10), // Adjusted margin for better spacing
-  backgroundColor: theme.palette.background.paper, // Ensuring background color
-}));
-
-// Styled Title with custom theme
-const Title = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
-  color: theme.palette.text.primary, // Use theme color for text
-}));
-
-// Styled Footer with custom theme
-const Footer = styled(Grid)(({ theme }) => ({
-  marginTop: theme.spacing(8),
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center", // Center align text for better appearance
-  padding: theme.spacing(2),
-}));
-
-// Styled Button with custom theme
-const NetworkButton = styled(Button)(({ theme }) => ({
-  marginTop: theme.spacing(3),
-  padding: theme.spacing(1.5, 3),
-  color: "#ffffff", // White text
-  backgroundColor: theme.palette.primary.main,
-  '&:hover': {
-    backgroundColor: theme.palette.primary.dark,
-  },
-}));
+import { Container, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Button } from "@mui/material"; 
+import Home from "./Home"; 
+import Footer from "../Components/Footer/Footer"; 
+import NarBar from "../Components/NavBar/NavBar"; 
 
 const ConnectWalletPage = () => {
   const [wrongNetwork, setWrongNetwork] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [promptUser, setPromptUser] = useState(true); // New state to prompt user
 
   // Replace with your desired network details
-  const desiredNetworkId = '24734'; // Example: Ethereum Mainnet
+  const desiredNetworkId = '24734'; 
   const desiredNetworkName = 'MintMe SmartChain';
   const rpcUrl = 'https://node.1000x.ch';
   const chainIdHex = '0x609e';
@@ -53,7 +21,12 @@ const ConnectWalletPage = () => {
         const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
         if (currentChainId !== desiredNetworkId) {
           setWrongNetwork(true);
+          setOpenModal(true); 
+        } else {
+          setPromptUser(false); // No need to prompt if already on the correct network
         }
+      } else {
+        setOpenModal(true); // Show modal if there's no wallet
       }
     };
     checkNetwork();
@@ -66,8 +39,8 @@ const ConnectWalletPage = () => {
         params: [{ chainId: chainIdHex }],
       });
       setWrongNetwork(false);
+      setOpenModal(false); // Close modal when network is switched
     } catch (switchError) {
-      // If the chain has not been added to the wallet, request to add it
       if (switchError.code === 4902) {
         try {
           await window.ethereum.request({
@@ -78,15 +51,16 @@ const ConnectWalletPage = () => {
                 chainName: desiredNetworkName,
                 rpcUrls: [rpcUrl],
                 nativeCurrency: {
-                  name: "MintMe Coin", // Replace with the actual name
-                  symbol: "MINTME", // Replace with the actual symbol (e.g., ETH for Ethereum)
-                  decimals: 18, // Typically 18 decimals
+                  name: "MintMe Coin",
+                  symbol: "MINTME",
+                  decimals: 18,
                 },
-                blockExplorerUrls: ["https://mintme.com/explorer"], // Optional: URL of a block explorer
+                blockExplorerUrls: ["https://mintme.com/explorer"],
               },
             ],
           });
           setWrongNetwork(false);
+          setOpenModal(false); 
         } catch (addError) {
           console.error('Failed to add network:', addError);
         }
@@ -95,38 +69,59 @@ const ConnectWalletPage = () => {
       }
     }
   };
-  
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleContinueBrowsing = () => {
+    setPromptUser(false); // Allow browsing without wallet
+    setOpenModal(false); // Close the modal
+  };
 
   return (
     <div>
-      {/* Title Section */}
-      <div className="Title">
-        <Typography variant="h4" align="center" gutterBottom>
-          DogSwap
-        </Typography>
-      </div>
+      {/* Render NavBar */}
+      <NarBar />
 
-      {/* Main Content */}
-      <Container>
-        <PaperContainer>
-          <Title variant="h6">
+      {/* Render Home Page */}
+      <Home />
+
+      {/* Modal for Wallet Information */}
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>Wallet Information</DialogTitle>
+        <DialogContent>
+          <Typography>
             {wrongNetwork
-              ? `You're either connected to the wrong network or not connected at all. Please switch to ${desiredNetworkName}.`
-              : 'Please connect a smart wallet to your browser to use the application.'}
-          </Title>
-          {wrongNetwork && (
-            <Box textAlign="center">
-              <NetworkButton onClick={switchNetwork}>
-                Switch to {desiredNetworkName}
-              </NetworkButton>
-            </Box>
+              ? `You're connected to the wrong network. Please switch to ${desiredNetworkName}.`
+              : 'You are currently browsing without a connected wallet. Some features may not be available.'}
+          </Typography>
+          {promptUser && (
+            <Typography>
+              Would you like to connect your wallet or continue browsing without it?
+            </Typography>
           )}
-        </PaperContainer>
-      </Container>
+        </DialogContent>
+        <DialogActions>
+          {promptUser ? (
+            <>
+              <Button onClick={switchNetwork} color="primary">
+                Connect Wallet
+              </Button>
+              <Button onClick={handleContinueBrowsing} color="secondary">
+                Continue Browsing
+              </Button>
+            </>
+          ) : (
+            <Button onClick={handleCloseModal} color="primary">
+              OK
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
 
-      {/* Footer Section */}
-      <Footer container direction="row">
-      </Footer>
+      {/* Render Footer */}
+      <Footer />
     </div>
   );
 };
