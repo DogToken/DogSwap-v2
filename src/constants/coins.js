@@ -100,10 +100,22 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/bitmonky.png",
   },
   {
+    name: "Donatello",
+    abbr: "Donatello",
+    address: "0x4F83B8D128d745a888Aff17c332056c6455e5079",
+    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/163b8368-803d-11ef-aa07-ac162db679ce.png",
+  },
+  {
     name: "MineMintToken",
     abbr: "MMT",
     address: "0xA27c1AbD15bfFAAde6c2e873C10fc7a2beb72d69",
     logoUrl: "https://dogswap.xyz/images/coins/mineminttoken.png",
+  },
+  {
+    name: "DGOne",
+    abbr: "DGOne",
+    address: "0x5c9D715e5d1aFd599975F93c459f44dE710DEFE2",
+    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/7aa076b8-79f0-11ef-96c5-ac162db679ce.png",
   },
   {
     name: "MintMoXMR",
