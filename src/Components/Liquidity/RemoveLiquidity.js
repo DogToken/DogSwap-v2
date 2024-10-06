@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, styled, Box, Paper, Chip, Button, TextField } from "@mui/material";
+import { Grid, InputAdornment, Typography, styled, Box, Paper, Chip, Button, TextField } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useSnackbar } from "notistack";
 import { getBalanceAndSymbol, getReserves } from "../../utils/ethereumFunctions";
@@ -17,6 +17,18 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
   maxWidth: '800px', // Increased width
   margin: '0 auto',
+}));
+
+const MaxButton = styled(Button)(({ theme }) => ({
+  minWidth: '64px',
+  height: '32px',
+  padding: theme.spacing(0, 1),
+  fontSize: '0.875rem',
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.primary.contrastText,
+  '&:hover': {
+    backgroundColor: theme.palette.secondary.dark,
+  },
 }));
 
 const TokenSelectorButton = styled(Button)(({ theme }) => ({
@@ -65,7 +77,24 @@ const StyledChip = styled(Chip)(({ theme }) => ({
 const AmountTextField = styled(TextField)(({ theme }) => ({
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(2),
-  width: '100%', // Ensure full width
+  width: '100%',
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'rgba(255, 255, 255, 0.23)',
+    },
+    '&:hover fieldset': {
+      borderColor: 'rgba(255, 255, 255, 0.23)',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: theme.palette.secondary.main,
+    },
+  },
+  '& .MuiInputLabel-root': {
+    color: 'rgba(255, 255, 255, 0.7)',
+  },
+  '& .MuiInput-input': {
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
 function LiquidityRemover(props) {
@@ -89,8 +118,12 @@ function LiquidityRemover(props) {
     setReserves([reserves[1], reserves[0]]);
   };
 
-  const handleChange = (e) => setField1Value(e.target.value);
-
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (value === "" || (!isNaN(value) && parseFloat(value) >= 0)) {
+      setField1Value(value);
+    }
+  };
   const formatBalance = (balance, symbol) => balance && symbol
     ? `${parseFloat(balance).toPrecision(8)} ${symbol}`
     : "0.0";
@@ -104,14 +137,22 @@ function LiquidityRemover(props) {
     return coin1.address && coin2.address && !isNaN(parsedInput) && parsedInput > 0 && parsedInput <= liquidityTokens;
   };
 
+  const handleMaxClick = () => {
+    if (liquidityTokens) {
+      setField1Value(liquidityTokens);
+    }
+  };
+
   const remove = () => {
     setLoading(true);
+    // Ensure field1Value is passed as a string
+    const stringValue = field1Value.toString();
     removeLiquidity(
       coin1.address,
       coin2.address,
-      field1Value,
-      0,
-      0,
+      stringValue,
+      "0", // Convert minimum amounts to strings
+      "0",
       props.network.router,
       props.network.account,
       props.network.signer,
@@ -124,7 +165,11 @@ function LiquidityRemover(props) {
       })
       .catch((e) => {
         setLoading(false);
-        enqueueSnackbar(`Removal Failed (${e.message})`, { variant: "error", autoHideDuration: 10000 });
+        console.error("Removal error:", e);
+        enqueueSnackbar(`Removal Failed: ${e.message || "Unknown error"}`, { 
+          variant: "error", 
+          autoHideDuration: 10000 
+        });
       });
   };
 
@@ -177,15 +222,22 @@ function LiquidityRemover(props) {
 
   useEffect(() => {
     if (isButtonEnabled()) {
+      const stringValue = field1Value.toString();
       quoteRemoveLiquidity(
         coin1.address,
         coin2.address,
-        field1Value,
+        stringValue,
         props.network.factory,
         props.network.signer
-      ).then((data) => setTokensOut(data));
+      )
+        .then((data) => setTokensOut(data))
+        .catch((error) => {
+          console.error("Quote error:", error);
+          setTokensOut([0, 0, 0]);
+        });
     }
   }, [coin1.address, coin2.address, field1Value, props.network.factory, props.network.signer]);
+
 
   useEffect(() => {
     const coinTimeout = setTimeout(() => {
@@ -318,11 +370,24 @@ function LiquidityRemover(props) {
 
               <Grid item xs={12}>
                 <AmountTextField
-                  label={`Amount of LP to remove`}
+                  label="Amount of LP to remove"
                   value={field1Value}
                   onChange={handleChange}
                   type="number"
                   variant="outlined"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <MaxButton
+                          onClick={handleMaxClick}
+                          variant="contained"
+                          size="small"
+                        >
+                          Max
+                        </MaxButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
 
