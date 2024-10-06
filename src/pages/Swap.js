@@ -5,75 +5,124 @@ import {
   IconButton,
   Paper,
   Typography,
-  styled,
   Box,
+  TextField,
+  Button,
+  CircularProgress,
+  Alert,
+  Collapse,
+  Tooltip,
+  Chip,
+  LinearProgress,
+  useTheme,
 } from "@mui/material";
-import SwapVerticalCircleIcon from "@mui/icons-material/SwapVerticalCircle";
-import { useSnackbar } from "notistack";
-import LoopIcon from "@mui/icons-material/Loop";
+import { styled } from "@mui/material/styles";
+import { alpha } from "@mui/material/styles";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import {
   getBalanceAndSymbol,
   getReserves,
   getAmountOut,
   swapTokens,
 } from "../utils/ethereumFunctions";
-import CoinField from "../Components/Swap/CoinField";
 import CoinDialog from "../Components/Swap/CoinDialog";
-import LoadingButton from "../Components/LoadingButton";
 import WrongNetwork from "../Components/wrongNetwork";
 
-const PaperContainer = styled(Paper)(({ theme }) => ({
-  borderRadius: theme.spacing(2),
-  padding: theme.spacing(3),
-  boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
-  width: '100%',
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  borderRadius: theme.spacing(3),
+  padding: theme.spacing(4),
+  background: `linear-gradient(145deg, ${alpha(theme.palette.background.paper, 0.9)}, ${alpha(theme.palette.background.paper, 0.95)})`,
+  backdropFilter: 'blur(10px)',
+  boxShadow: theme.shadows[10],
+  position: 'relative',
+  overflow: 'hidden',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '4px',
+    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+  }
 }));
 
-const SwitchButton = styled(IconButton)(({ theme }) => ({
-  zIndex: 1,
-  margin: "-8px",
-  padding: theme.spacing(0.5),
+const SwapButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
-  color: "#fff",
+  color: theme.palette.primary.contrastText,
+  padding: theme.spacing(1.5),
+  transition: 'transform 0.3s ease-in-out',
   '&:hover': {
     backgroundColor: theme.palette.primary.dark,
+    transform: 'rotate(180deg)',
+  },
+  '&.Mui-disabled': {
+    backgroundColor: theme.palette.action.disabledBackground,
   },
 }));
 
-const FullWidthGrid = styled(Grid)({
-  width: "100%",
-});
-
-const TitleTypography = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
-  padding: theme.spacing(1),
-  marginBottom: theme.spacing(2),
-  fontSize: "1.25rem",
-  fontWeight: "500",
-  color: theme.palette.primary.main,
+const CoinContainer = styled(Box)(({ theme }) => ({
+  background: alpha(theme.palette.background.paper, 0.4),
+  borderRadius: theme.spacing(2),
+  padding: theme.spacing(2),
+  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    border: `1px solid ${alpha(theme.palette.primary.main, 0.5)}`,
+    background: alpha(theme.palette.background.paper, 0.6),
+  }
 }));
 
-const HR = styled("hr")(({ theme }) => ({
-  width: "100%",
-  border: 0,
-  borderTop: `1px solid ${theme.palette.divider}`,
-  margin: theme.spacing(2, 0),
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    backgroundColor: 'transparent',
+    '& fieldset': {
+      border: 'none',
+    },
+    '&:hover fieldset': {
+      border: 'none',
+    },
+    '&.Mui-focused fieldset': {
+      border: 'none',
+    },
+  },
+  '& input': {
+    fontSize: '1.5rem',
+    fontWeight: '500',
+  },
 }));
 
-const BalanceTypography = styled(Typography)(({ theme }) => ({
-  padding: theme.spacing(1),
-  overflowWrap: "break-word",
-  textAlign: "center",
-  color: "#666",
+const ActionButton = styled(Button)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  padding: theme.spacing(1.5),
+  fontSize: '1.1rem',
+  fontWeight: '600',
+  textTransform: 'none',
+  minHeight: 56,
 }));
 
-const FooterContainer = styled(Grid)({
-  marginTop: "auto",
-  width: "100%",
-});
+const InfoTypography = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  marginTop: theme.spacing(1),
+  fontSize: '0.875rem',
+}));
+
+const MetricBox = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  borderRadius: theme.spacing(1),
+  background: alpha(theme.palette.background.paper, 0.4),
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(1),
+}));
 
 function CoinSwapper(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const theme = useTheme();
   const [dialog1Open, setDialog1Open] = useState(false);
   const [dialog2Open, setDialog2Open] = useState(false);
   const [wrongNetworkOpen, setWrongNetworkOpen] = useState(false);
@@ -91,6 +140,12 @@ function CoinSwapper(props) {
   const [field1Value, setField1Value] = useState("");
   const [field2Value, setField2Value] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleFieldChange = (event) => {
+    setField1Value(event.target.value);
+    setError("");
+  };
 
   const switchFields = () => {
     setCoin1(coin2);
@@ -99,15 +154,8 @@ function CoinSwapper(props) {
     setReserves([...reserves].reverse());
   };
 
-  const handleChange = {
-    field1: (e) => setField1Value(e.target.value),
-  };
-
   const formatBalance = (balance, symbol) =>
     balance && symbol ? `${parseFloat(balance).toPrecision(8)} ${symbol}` : "0.0";
-
-  const formatReserve = (reserve, symbol) =>
-    reserve && symbol ? `${reserve} ${symbol}` : "0.0";
 
   const isButtonEnabled = () => {
     const parsedInput1 = parseFloat(field1Value);
@@ -122,91 +170,87 @@ function CoinSwapper(props) {
     );
   };
 
-  const onToken1Selected = (address) => {
+  const onToken1Selected = async (address) => {
     setDialog1Open(false);
     if (address === coin2.address) {
       switchFields();
     } else if (address) {
-      getBalanceAndSymbol(
-        props.network.account,
-        address,
-        props.network.provider,
-        props.network.signer,
-        props.network.weth.address,
-        props.network.coins
-      ).then((data) => {
+      try {
+        const data = await getBalanceAndSymbol(
+          props.network.account,
+          address,
+          props.network.provider,
+          props.network.signer,
+          props.network.weth.address,
+          props.network.coins
+        );
         setCoin1({
           address,
           symbol: data.symbol,
           balance: data.balance,
         });
-      });
+      } catch (err) {
+        setError("Failed to fetch token details");
+      }
     }
   };
 
-  const onToken2Selected = (address) => {
+  const onToken2Selected = async (address) => {
     setDialog2Open(false);
     if (address === coin1.address) {
       switchFields();
     } else if (address) {
-      getBalanceAndSymbol(
-        props.network.account,
-        address,
-        props.network.provider,
-        props.network.signer,
-        props.network.weth.address,
-        props.network.coins
-      ).then((data) => {
+      try {
+        const data = await getBalanceAndSymbol(
+          props.network.account,
+          address,
+          props.network.provider,
+          props.network.signer,
+          props.network.weth.address,
+          props.network.coins
+        );
         setCoin2({
           address,
           symbol: data.symbol,
           balance: data.balance,
         });
-      });
+      } catch (err) {
+        setError("Failed to fetch token details");
+      }
     }
   };
 
-  const swap = () => {
-    console.log("Attempting to swap tokens...");
+  const swap = async () => {
     setLoading(true);
-
-    swapTokens(
-      coin1.address,
-      coin2.address,
-      field1Value,
-      props.network.router,
-      props.network.account,
-      props.network.signer
-    )
-      .then(() => {
-        setLoading(false);
-        setField1Value("");
-        enqueueSnackbar("Transaction Successful", { variant: "success" });
-      })
-      .catch((e) => {
-        setLoading(false);
-        enqueueSnackbar(`Transaction Failed (${e.message})`, {
-          variant: "error",
-          autoHideDuration: 10000,
-        });
-      });
+    setError("");
+    try {
+      await swapTokens(
+        coin1.address,
+        coin2.address,
+        field1Value,
+        props.network.router,
+        props.network.account,
+        props.network.signer
+      );
+      setField1Value("");
+    } catch (err) {
+      setError(err.message || "Swap failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     if (coin1.address && coin2.address) {
-      console.log(
-        `Trying to get Reserves between:\n${coin1.address}\n${coin2.address}`
-      );
-
       getReserves(
         coin1.address,
         coin2.address,
         props.network.factory,
         props.network.signer,
         props.network.account
-      ).then((data) => setReserves(data));
+      ).then(setReserves);
     }
-  }, [coin1.address, coin2.address, props.network.factory, props.network.signer, props.network.account]);
+  }, [coin1.address, coin2.address, props.network]);
 
   useEffect(() => {
     if (isNaN(parseFloat(field1Value))) {
@@ -220,147 +264,197 @@ function CoinSwapper(props) {
         props.network.signer
       )
         .then((amount) => setField2Value(amount.toFixed(7)))
-        .catch((e) => {
-          console.log(e);
-          setField2Value("NA");
-        });
+        .catch(() => setField2Value("NA"));
     } else {
       setField2Value("");
     }
-  }, [field1Value, coin1.address, coin2.address, props.network.router, props.network.signer]);
+  }, [field1Value, coin1.address, coin2.address, props.network]);
 
   useEffect(() => {
-    const coinTimeout = setTimeout(() => {
-      console.log("Checking balances...");
+    const updateBalances = async () => {
+      if (!props.network.account || wrongNetworkOpen) return;
 
-      if (coin1.address && coin2.address && props.network.account) {
-        getReserves(
-          coin1.address,
-          coin2.address,
-          props.network.factory,
-          props.network.signer,
-          props.network.account
-        ).then((data) => setReserves(data));
-      }
-
-      if (coin1.address && props.network.account && !wrongNetworkOpen) {
-        getBalanceAndSymbol(
+      if (coin1.address) {
+        const data = await getBalanceAndSymbol(
           props.network.account,
           coin1.address,
           props.network.provider,
           props.network.signer,
           props.network.weth.address,
           props.network.coins
-        ).then((data) =>
-          setCoin1((prevCoin1) => ({
-            ...prevCoin1,
-            balance: data.balance,
-          }))
         );
+        setCoin1(prev => ({ ...prev, balance: data.balance }));
       }
-      if (coin2.address && props.network.account && !wrongNetworkOpen) {
-        getBalanceAndSymbol(
+
+      if (coin2.address) {
+        const data = await getBalanceAndSymbol(
           props.network.account,
           coin2.address,
           props.network.provider,
           props.network.signer,
           props.network.weth.address,
           props.network.coins
-        ).then((data) =>
-          setCoin2((prevCoin2) => ({
-            ...prevCoin2,
-            balance: data.balance,
-          }))
         );
+        setCoin2(prev => ({ ...prev, balance: data.balance }));
       }
-    }, 10000);
+    };
 
-    return () => clearTimeout(coinTimeout);
+    const interval = setInterval(updateBalances, 10000);
+    return () => clearInterval(interval);
   }, [coin1.address, coin2.address, props.network, wrongNetworkOpen]);
 
   return (
-    <Box>
-      <CoinDialog
-        open={dialog1Open}
-        onClose={onToken1Selected}
-        coins={props.network.coins}
-        signer={props.network.signer}
-      />
-      <CoinDialog
-        open={dialog2Open}
-        onClose={onToken2Selected}
-        coins={props.network.coins}
-        signer={props.network.signer}
-      />
-      <WrongNetwork open={wrongNetworkOpen} />
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <StyledPaper elevation={3}>
+        <Typography 
+          variant="h4" 
+          component="h1" 
+          align="center" 
+          gutterBottom 
+          sx={{ 
+            fontWeight: 600,
+            background: 'linear-gradient(45deg, #1976d2, #9c27b0)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}
+        >
+          Swap Tokens
+        </Typography>
 
-      <Container maxWidth="sm">
-        <PaperContainer>
-          <TitleTypography variant="h5">Swap Coins</TitleTypography>
+        <Box sx={{ mt: 4 }}>
+          <CoinContainer>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs>
+                <StyledTextField
+                  fullWidth
+                  type="number"
+                  value={field1Value}
+                  onChange={handleFieldChange}
+                  placeholder="0.0"
+                  InputProps={{
+                    endAdornment: (
+                      <Button
+                        onClick={() => setDialog1Open(true)}
+                        variant="contained"
+                        sx={{ ml: 1 }}
+                      >
+                        {coin1.symbol || "Select"}
+                      </Button>
+                    ),
+                  }}
+                />
+              </Grid>
+            </Grid>
+            <InfoTypography>
+              Balance: {formatBalance(coin1.balance, coin1.symbol)}
+            </InfoTypography>
+          </CoinContainer>
 
-          <Grid container direction="column" alignItems="center" spacing={2}>
-            <FullWidthGrid item xs={12}>
-              <CoinField
-                activeField
-                value={field1Value}
-                onClick={() => setDialog1Open(true)}
-                onChange={handleChange.field1}
-                symbol={coin1.symbol || "Select"}
+          <Box display="flex" justifyContent="center" my={-1} sx={{ position: 'relative', zIndex: 1 }}>
+            <SwapButton onClick={switchFields} size="large">
+              <SwapVertIcon />
+            </SwapButton>
+          </Box>
+
+          <CoinContainer>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs>
+                <StyledTextField
+                  fullWidth
+                  type="number"
+                  value={field2Value}
+                  placeholder="0.0"
+                  disabled
+                  InputProps={{
+                    endAdornment: (
+                      <Button
+                        onClick={() => setDialog2Open(true)}
+                        variant="contained"
+                        sx={{ ml: 1 }}
+                      >
+                        {coin2.symbol || "Select"}
+                      </Button>
+                    ),
+                  }}
+                />
+              </Grid>
+            </Grid>
+            <InfoTypography>
+              Balance: {formatBalance(coin2.balance, coin2.symbol)}
+            </InfoTypography>
+          </CoinContainer>
+
+          {/* Liquidity Display */}
+          <Box sx={{ mt: 3, p: 2, bgcolor: alpha(theme.palette.background.paper, 0.4), borderRadius: 2 }}>
+            <Typography variant="subtitle2" gutterBottom>
+              Pool Liquidity
+            </Typography>
+            <Box sx={{ width: '100%', mt: 1 }}>
+              <LinearProgress
+                variant="determinate"
+                value={50} // Calculate actual ratio here
+                sx={{
+                  height: 10,
+                  borderRadius: 5,
+                  bgcolor: alpha(theme.palette.primary.main, 0.1),
+                  '& .MuiLinearProgress-bar': {
+                    borderRadius: 5,
+                    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                  },
+                }}
               />
-            </FullWidthGrid>
+            </Box>
+            <Box display="flex" justifyContent="space-between" mt={1}>
+              <Typography variant="caption">
+                {reserves[0]} {coin1.symbol}
+              </Typography>
+              <Typography variant="caption">
+                {reserves[1]} {coin2.symbol}
+              </Typography>
+            </Box>
+          </Box>
 
-            <SwitchButton onClick={switchFields}>
-              <SwapVerticalCircleIcon sx={{ fontSize: 40 }} />
-            </SwitchButton>
+          <Collapse in={Boolean(error)}>
+            <Alert 
+              severity="error" 
+              sx={{ mt: 2 }}
+              icon={<WarningAmberIcon />}
+            >
+              {error}
+            </Alert>
+          </Collapse>
 
-            <FullWidthGrid item xs={12}>
-              <CoinField
-                value={field2Value}
-                onClick={() => setDialog2Open(true)}
-                symbol={coin2.symbol || "Select"}
-              />
-            </FullWidthGrid>
-          </Grid>
+          <ActionButton
+            fullWidth
+            variant="contained"
+            disabled={!isButtonEnabled() || loading}
+            onClick={swap}
+            sx={{ mt: 3 }}
+            startIcon={loading && <CircularProgress size={20} color="inherit" />}
+          >
+            {loading ? "Swapping..." : "Swap Tokens"}
+          </ActionButton>
+        </Box>
+      </StyledPaper>
 
-          <HR />
-
-          <BalanceTypography variant="body2">
-            <strong>Coin 1 Balance: </strong>
-            {formatBalance(coin1.balance, coin1.symbol)}
-          </BalanceTypography>
-
-          <BalanceTypography variant="body2">
-            <strong>Coin 2 Balance: </strong>
-            {formatBalance(coin2.balance, coin2.symbol)}
-          </BalanceTypography>
-
-          <HR />
-
-          <BalanceTypography variant="body2">
-            <strong>Reserves: </strong>
-            {`${formatReserve(reserves[0], coin1.symbol)} / ${formatReserve(
-              reserves[1],
-              coin2.symbol
-            )}`}
-          </BalanceTypography>
-
-          <Grid container direction="column" alignItems="center">
-            <FooterContainer item>
-              <LoadingButton
-                color="primary"
-                size="large"
-                variant="contained"
-                onClick={swap}
-                loading={loading}
-                disabled={!isButtonEnabled()}
-                startIcon={<LoopIcon />}
-                text="Swap"
-              />
-            </FooterContainer>
-          </Grid>
-        </PaperContainer>
-      </Container>
-    </Box>
+      {dialog1Open && (
+        <CoinDialog
+          open={dialog1Open}
+          onClose={onToken1Selected}
+          coins={props.network.coins}
+          signer={props.network.signer}
+        />
+      )}
+      {dialog2Open && (
+        <CoinDialog
+          open={dialog2Open}
+          onClose={onToken2Selected}
+          coins={props.network.coins}
+          signer={props.network.signer}
+        />
+      )}
+      {wrongNetworkOpen && <WrongNetwork open={wrongNetworkOpen} />}
+    </Container>
   );
 }
 
