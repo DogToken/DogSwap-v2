@@ -13,6 +13,8 @@ import { getProvider, getSigner } from '../utils/ethereumFunctions';
 import { Contract, ethers } from 'ethers';
 import boneTokenABI from "../assets/abi/IERC20.json";
 import masterChefABI from '../assets/abi/MasterChef.json';
+import CollectAllRewardsButton from '../Components/Pools/CollectAllRewardsButton';
+
 
 // Styled components
 const RootContainer = styled(Container)(({ theme }) => ({
@@ -180,7 +182,7 @@ const Pools = () => {
           label="Hide Inactive Pools"
         />
       </Header>
-
+      <CollectAllRewardsButton pools={poolsData} />
       {filteredPools.length === 0 ? (
         <Alert severity="info">
           No active pools available at the moment. Please check back later.

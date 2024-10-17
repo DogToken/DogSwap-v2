@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.6] - 2024-10-17
+
+### Changes
+
+- Added XatteR to tokens in dashboard as a known token
+- Split the pools page into components for proper coding overview
+- Added a collect all rewards button on the pools pages, UI will adapt as we go
+
+### Bugfixes
+
+- Mintme deployed tokens on dashboard were given 18 decimals, corrected to 12
+
+### Additions
+
+- Collect button on Pools pages (will collect all pending rewards, takes a while though)
+
 ## [2.2.5] - 2024-10-07
 
 ### Changes
