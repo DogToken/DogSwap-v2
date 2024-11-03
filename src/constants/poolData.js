@@ -88,7 +88,7 @@ export const poolData = [
         fee: '2.5',
         lpTokenAddress: '0x32D8Da81B7b4a562b0852ed6823BE8b2CCFa6495',
         imageTokenA: 'https://dogswap.xyz/images/coins/bone.png',
-        imageTokenB: 'https://www.mintme.com/media/cache/avatar_large/uploads/images/05dd4214-dc43-11eb-89a0-78e3b517e592.jpeg',
+        imageTokenB: 'https://dogswap.xyz/images/coins/xatter.png',
     },
     {
         title: 'MintMe / XatteR',
@@ -101,6 +101,6 @@ export const poolData = [
         fee: '2.5',
         lpTokenAddress: '0x1d2a64b660E572ce653f35Ce5A9A655D05ae9fd0',
         imageTokenA: 'https://dogswap.xyz/images/coins/mintme.png',
-        imageTokenB: 'https://www.mintme.com/media/cache/avatar_large/uploads/images/05dd4214-dc43-11eb-89a0-78e3b517e592.jpeg',
+        imageTokenB: 'https://dogswap.xyz/images/coins/xatter.png',
     },
   ];

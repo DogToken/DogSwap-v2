@@ -193,7 +193,7 @@ export default function Stake() {
     const interval = setInterval(() => {
       fetchBalances();
       fetchTVLData();
-    }, 30000); // Refresh every 30 seconds
+    }, 300000); // Refresh every 300 seconds
     return () => clearInterval(interval);
   }, []);
 
