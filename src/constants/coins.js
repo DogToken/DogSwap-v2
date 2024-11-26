@@ -34,28 +34,34 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/peppermint.png",
   },
   {
-    name: "MintMeBull",
-    abbr: "MintMe Bull",
-    address: "0xd5c9BFF69210129764DEFEc86bD7e239dD2cE844",
-    logoUrl: "https://dogswap.xyz/images/coins/mintmebull.png",
+    name: "XatteR",
+    abbr: "XatteR",
+    address: "0xB580f1dbA1c17882Fca8f6DDadA8428c9cB177fC",
+    logoUrl: "https://dogswap.xyz/images/coins/xatter.png",
+  },
+  {
+    name: "Ranger",
+    abbr: "Ranger",
+    address: "0x5fed7eb4b29e9b2e2758ac40c9ec4b4e67098192",
+    logoUrl: "https://dogswap.xyz/images/coins/ranger.png",
   },
   {
     name: "Dance And Music",
     abbr: "Dance And Music",
     address: "0x381911b21E0Cd8C3F4A57B332adCcfC0a64E26c5",
-    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/4e771a96-d83b-11ec-bec9-ac162db679ce.png",
+    logoUrl: "https://dogswap.xyz/images/coins/DAM.png",
   },
   {
     name: "Zarali",
     abbr: "Zarali",
     address: "0xa88bCa314ebe9301cBa3b4C718149b05D4AD0ea5",
-    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/a36d2a38-4f17-11ed-be77-ac162db679ce.png",
+    logoUrl: "https://dogswap.xyz/images/coins/zarali.png",
   },
   {
     name: "D Club",
     abbr: "D Club",
     address: "0x7457a49688E2D7a2067694f687Ff87A3D10008B3",
-    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/f0e22c40-60e6-11ef-a94b-ac162db679ce.png",
+    logoUrl: "https://dogswap.xyz/images/coins/dclub.png",
   },
   {
     name: "Shells",
@@ -70,6 +76,12 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/anukis.png",
   },
   {
+    name: "MintMeBull",
+    abbr: "MintMe Bull",
+    address: "0xd5c9BFF69210129764DEFEc86bD7e239dD2cE844",
+    logoUrl: "https://dogswap.xyz/images/coins/mintmebull.png",
+  },
+  {
     name: "Prunity",
     abbr: "Prunity",
     address: "0x78CF733E6e113BA393b3bd17E4738E4dd63366fb",
@@ -82,16 +94,10 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/tree.jpeg",
   },
   {
-    name: "XatteR",
-    abbr: "XatteR",
-    address: "0xB580f1dbA1c17882Fca8f6DDadA8428c9cB177fC",
-    logoUrl: "https://dogswap.xyz/images/coins/xatter.png",
-  },
-  {
     name: "bobdubbloon",
     abbr: "bobdubbloon",
     address: "0x2f9C7A6ff391d0b6D5105F8e37F2050649482c75",
-    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/d5c1e72a-424b-11ef-a3ce-78e3b517e592.jpeg",
+    logoUrl: "https://dogswap.xyz/images/coins/bobdub.jpeg",
   },
   {
     name: "BitMonky",
@@ -103,7 +109,7 @@ const MINTMECoins = [
     name: "Donatello",
     abbr: "Donatello",
     address: "0x4F83B8D128d745a888Aff17c332056c6455e5079",
-    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/163b8368-803d-11ef-aa07-ac162db679ce.png",
+    logoUrl: "https://dogswap.xyz/images/coins/donatello.webp",
   },
   {
     name: "MineMintToken",
@@ -115,7 +121,7 @@ const MINTMECoins = [
     name: "DGOne",
     abbr: "DGOne",
     address: "0x5c9D715e5d1aFd599975F93c459f44dE710DEFE2",
-    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/7aa076b8-79f0-11ef-96c5-ac162db679ce.png",
+    logoUrl: "https://dogswap.xyz/images/coins/dgone.png",
   },
   {
     name: "MintMoXMR",
