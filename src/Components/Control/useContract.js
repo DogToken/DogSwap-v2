@@ -99,7 +99,7 @@ const useContract = () => {
       const interval = setInterval(fetchPendingBone, 30000);
       return () => clearInterval(interval);
     }
-  }, [contract, account, poolId]);
+  }, [contract, account, poolId, fetchPendingBone]);
 
   const handleDeposit = async () => {
     if (contract && amount) {
