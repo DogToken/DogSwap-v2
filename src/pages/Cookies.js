@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import {
   Container, Typography, Paper,
-  Snackbar, Alert, useTheme, useMediaQuery
+  Snackbar, Alert
 } from '@mui/material';
 import { styled } from '@mui/system';
 
@@ -53,8 +53,6 @@ const SectionHeading = styled(Typography)(({ theme }) => ({
 }));
 
 const CookiePolicy = () => {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     // Track page view for Google Analytics

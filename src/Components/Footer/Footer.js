@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Grid, Typography, IconButton, Link, styled, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Container, Grid, Typography, IconButton, Link, styled, useTheme } from '@mui/material';
 import { FaDiscord, FaTelegram, FaGithub, FaXTwitter } from 'react-icons/fa6';
 import { IoMdPaw } from 'react-icons/io';
 
@@ -89,7 +89,6 @@ const AnimatedSection = styled('div')(({ theme, delay }) => ({
 
 const Footer = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [year, setYear] = useState(new Date().getFullYear());
 
   useEffect(() => {

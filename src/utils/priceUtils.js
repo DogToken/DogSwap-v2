@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import axios from 'axios';
 import pairABI from "./../assets/abi/IUniswapV2Pair.json";
 
 const POOLS = [

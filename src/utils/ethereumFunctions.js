@@ -1,6 +1,5 @@
 import { Contract, ethers } from "ethers";
 import * as chains from "../constants/chains";
-import COINS from "../constants/coins";
 
 const ROUTER = require("./../assets/abi/IUniswapV2Router02.json");
 const ERC20 = require("./../assets/abi/IERC20.json");
@@ -241,10 +240,6 @@ export async function fetchReserves(address1, address2, pair, signer) {
 }
 export async function fetchReservesRaw(address1, address2, pair, signer) {
   try {
-
-    // Get decimals for each coin
-    const coin1 = new Contract(address1, ERC20, signer);
-    const coin2 = new Contract(address2, ERC20, signer);
     // Get reserves
     const reservesRaw = await pair.getReserves();
 

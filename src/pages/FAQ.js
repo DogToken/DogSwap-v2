@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga4';
 import {
   Container, Typography, Paper, Accordion, AccordionSummary, AccordionDetails,
- Snackbar, Alert, useTheme, useMediaQuery
+ Snackbar, Alert
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/system';
@@ -40,22 +40,8 @@ const Title = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const SectionHeading = styled(Typography)(({ theme }) => ({
-  fontWeight: 600,
-  marginTop: theme.spacing(3),
-  marginBottom: theme.spacing(1),
-  fontSize: '1.25rem',
-  display: 'flex',
-  alignItems: 'center',
-  fontFamily: '"Roboto", sans-serif',
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '1rem',
-  },
-}));
 
 const FAQPage = () => {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {

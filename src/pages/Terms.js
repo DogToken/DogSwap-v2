@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import {
   Container, Typography, Paper, 
-  Snackbar, Alert, useTheme, useMediaQuery
+  Snackbar, Alert, useTheme
 } from '@mui/material';
 import { styled } from '@mui/system';
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Typography, Container, Grid, Card, Stack } from '@mui/material';
-import { styled } from '@mui/system';
 import SwapHorizRoundedIcon from '@mui/icons-material/SwapHorizRounded';
 import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
@@ -10,7 +9,6 @@ import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import Features from '../Components/Home/Features';
 import Hero from '../Components/Home/Hero';
 import FAQ from '../Components/Home/FAQ';
-import About from '../Components/Home/About';
 
 // Custom styled components
 

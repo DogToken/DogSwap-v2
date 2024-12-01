@@ -54,7 +54,7 @@ const App = () => {
       try {
         // Fetch MintMe price
         let response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=webchain&vs_currencies=usd`);
-        if(response.status == 200) {
+        if(response.status === 200) {
           setMintMePriceInUsd(response.data['webchain']?.usd);
           setBonePriceInMintMe(await getBonePriceInMintMe());
           setBonePriceInUSD(await getBonePriceInUSD(response.data['webchain']?.usd));

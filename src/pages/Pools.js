@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga4';
-import { Container, FormControlLabel, Switch, Alert, AlertTitle, CircularProgress, Tabs, Tab } from '@mui/material';
+import { FormControlLabel, Switch, Alert, AlertTitle, CircularProgress, Tab } from '@mui/material';
 import { getProvider, getSigner } from '../utils/ethereumFunctions';
 import { Contract, ethers } from 'ethers';
 import boneTokenABI from "../assets/abi/IERC20.json";

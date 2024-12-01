@@ -24,7 +24,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { ethers } from 'ethers';
 import { doesTokenExist } from '../../utils/ethereumFunctions';
-import COINS from '../../constants/coins';
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
