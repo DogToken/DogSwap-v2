@@ -294,7 +294,6 @@ export async function quoteRemoveLiquidity(
     const reserveA = ethers.BigNumber.from(reservesRaw[0].toString());
     const reserveB = ethers.BigNumber.from(reservesRaw[1].toString());
 
-    const kLast = await pair.kLast();
     let totalSupply = ethers.BigNumber.from(await pair.totalSupply());
 
     const fee = await estimateFee(pair, factory, reserveA, reserveB);

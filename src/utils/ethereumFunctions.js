@@ -1,6 +1,5 @@
 import { Contract, ethers } from "ethers";
 import * as chains from "../constants/chains";
-import COINS from "../constants/coins";
 
 const ROUTER = require("./../assets/abi/IUniswapV2Router02.json");
 const ERC20 = require("./../assets/abi/IERC20.json");
@@ -227,7 +226,7 @@ export async function fetchReserves(address1, address2, pair, signer) {
       (await pair.token0()) === address1 ? reservesRaw[0] : reservesRaw[1],
       (await pair.token1()) === address2 ? reservesRaw[1] : reservesRaw[0],
     ];
-
+    
     // Scale each to the right decimal place
     return [
       (results[0]*10**(-coin1Decimals)),
@@ -241,10 +240,6 @@ export async function fetchReserves(address1, address2, pair, signer) {
 }
 export async function fetchReservesRaw(address1, address2, pair, signer) {
   try {
-
-    // Get decimals for each coin
-    const coin1 = new Contract(address1, ERC20, signer);
-    const coin2 = new Contract(address2, ERC20, signer);
     // Get reserves
     const reservesRaw = await pair.getReserves();
 
@@ -280,7 +275,6 @@ export async function getReserves(
     const pair = new Contract(pairAddress, PAIR, signer);
   
     if (pairAddress !== '0x0000000000000000000000000000000000000000'){
-  
       const reservesRaw = await fetchReserves(address1, address2, pair, signer);
       const liquidityTokens_BN = await pair.balanceOf(accountAddress);
       const liquidityTokens = Number(

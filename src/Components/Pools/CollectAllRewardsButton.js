@@ -16,7 +16,7 @@ import {
   Paper,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import { ChevronDown, ChevronUp, AlertTriangle, CheckCircle, XCircle, Clock, X } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, X } from 'lucide-react';
 import masterChefABI from '../../assets/abi/MasterChef.json';
 
 const StyledButton = styled(Button)(({ theme }) => ({

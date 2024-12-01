@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+package-lock.jsong
 
 # testing
 coverage
@@ -30,6 +31,8 @@ build
 .unimportedrc.json
 tsconfig.tsbuildinfo
 .vscode
+*.sublime-project
+*.sublime-workspace
 
 npm-debug.log*
 yarn-debug.log*

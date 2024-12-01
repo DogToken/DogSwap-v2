@@ -35,7 +35,6 @@ export default function RecentTransactions() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [walletAddress, setWalletAddress] = useState('');
 
   useEffect(() => {
     connectToWallet();
@@ -50,7 +49,6 @@ export default function RecentTransactions() {
       // Get the connected account (wallet address)
       const signer = provider.getSigner();
       const address = await signer.getAddress();
-      setWalletAddress(address);
 
       // Fetch recent transactions after getting the address
       fetchTransactions(provider, address);

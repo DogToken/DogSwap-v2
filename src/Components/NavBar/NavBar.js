@@ -3,22 +3,23 @@ import { Link } from 'react-router-dom';
 import { MenuItems } from './MenuItems'; // Ensure this includes main menu items
 import { ethers } from 'ethers';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { getBonePriceInUSD } from '../../utils/priceUtils';
 import '../../styles/NavBar.css';
 import { Avatar, Menu, MenuItem, Typography, IconButton } from '@mui/material';
 import defaultAvatar from '../../assets/images/defaultavatar.jpg';
 import NewsTickerComponent from './NewsTickerComponent';
+import { Context } from "../../Context";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(null);
-  const [bonePriceInUSD, setBonePriceInUSD] = useState(0);
+  
+  const [bonePriceInUSD] = React.useContext(Context).bonePriceInUSDState;
+
   const [userAddress, setUserAddress] = useState('');
   const [activeMenu, setActiveMenu] = useState(null); // Track active menu item for subnav
 
   const toggleMenu = () => setIsOpen(!isOpen);
-
   const connectWallet = useCallback(async () => {
     if (typeof window.ethereum !== 'undefined') {
       try {
@@ -26,10 +27,7 @@ const NavBar = () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const address = await signer.getAddress();
-
-        const bonePriceInUSD = await getBonePriceInUSD(provider);
-
-        setBonePriceInUSD(bonePriceInUSD);
+        
         setUserAddress(address);
         setIsConnected(true);
       } catch (error) {
@@ -42,7 +40,6 @@ const NavBar = () => {
 
   const disconnectWallet = () => {
     setIsConnected(false);
-    setBonePriceInUSD(0);
     setShowUserMenu(null);
   };
 
@@ -116,7 +113,7 @@ const NavBar = () => {
             {isConnected && (
               <div className="connected-wallet">
                 <Typography variant="body1" sx={{ color: '#4a4a4a', marginRight: '1rem' }}>
-                  1 🦴 = ${bonePriceInUSD} USD
+                  1 <span role="img" aria-label="bone icon">&#129460;</span> = ${bonePriceInUSD} USD
                 </Typography>
 
                 <div className="user-menu">

@@ -11,18 +11,12 @@ import {
   CircularProgress,
   Alert,
   Collapse,
-  Tooltip,
-  Chip,
   LinearProgress,
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { alpha } from "@mui/material/styles";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import {
   getBalanceAndSymbol,
@@ -112,20 +106,12 @@ const InfoTypography = styled(Typography)(({ theme }) => ({
   fontSize: '0.875rem',
 }));
 
-const MetricBox = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(1.5),
-  borderRadius: theme.spacing(1),
-  background: alpha(theme.palette.background.paper, 0.4),
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(1),
-}));
 
 function CoinSwapper(props) {
   const theme = useTheme();
   const [dialog1Open, setDialog1Open] = useState(false);
   const [dialog2Open, setDialog2Open] = useState(false);
-  const [wrongNetworkOpen, setWrongNetworkOpen] = useState(false);
+  const [wrongNetworkOpen] = useState(false);
   const [coin1, setCoin1] = useState({
     address: undefined,
     symbol: undefined,

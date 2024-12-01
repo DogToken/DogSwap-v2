@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import axios from 'axios';
 import pairABI from "./../assets/abi/IUniswapV2Pair.json";
 
 const POOLS = [
@@ -11,7 +10,8 @@ const POOLS = [
 ];
 const BONE_TOKEN_DECIMALS = 18;
 
-export const getBonePriceInMintMe = async (provider) => {
+export const getBonePriceInMintMe = async () => {
+  const provider = new ethers.providers.JsonRpcProvider("https://node.1000x.ch");
   const bonePool = POOLS.find(pool => pool.name === "$BONE-WMINT");
   const boneReserves = await new ethers.Contract(bonePool.address, pairABI, provider).getReserves();
   const boneReserve0 = boneReserves[0] / 10 ** BONE_TOKEN_DECIMALS;
@@ -21,23 +21,7 @@ export const getBonePriceInMintMe = async (provider) => {
   return parseFloat(bonePriceInMintMe).toFixed(8);
 };
 
-export const getMintmePriceInUSD = async () => {
-  const coinId = 'webchain';
-  try {
-    const { data } = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`);
-    const mintmePriceInUSD = data[coinId]?.usd;
-    if (mintmePriceInUSD === undefined) {
-      throw new Error(`${coinId} price data is unavailable`);
-    }
-    return mintmePriceInUSD;
-  } catch (error) {
-    console.error('Error fetching MintMe price:', error);
-    return 0;
-  }
-};
-
-export const getBonePriceInUSD = async (provider) => {
-  const bonePriceInMintMe = await getBonePriceInMintMe(provider);
-  const mintmePriceInUSD = await getMintmePriceInUSD();
+export const getBonePriceInUSD = async (mintmePriceInUSD) => {
+  const bonePriceInMintMe = await getBonePriceInMintMe();
   return (bonePriceInMintMe * mintmePriceInUSD).toFixed(4);
 };

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  Container, Typography, Box, Button, Grid, IconButton,
-  useTheme, useMediaQuery
+  Container, Typography, Box, Button, Grid, IconButton
 } from '@mui/material';
 import {
   ContentCopy as ContentCopyIcon,
@@ -33,9 +32,6 @@ const ProfileDashboard = () => {
     routerTransactions: true
   });
   const [error, setError] = useState('');
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
