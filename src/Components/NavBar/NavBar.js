@@ -116,7 +116,7 @@ const NavBar = () => {
             {isConnected && (
               <div className="connected-wallet">
                 <Typography variant="body1" sx={{ color: '#4a4a4a', marginRight: '1rem' }}>
-                  1 🦴 = ${bonePriceInUSD} USD
+                  1 <span role="img" aria-label="bone icon">&#129460;</span> = ${bonePriceInUSD} USD
                 </Typography>
 
                 <div className="user-menu">
