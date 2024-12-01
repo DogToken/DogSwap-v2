@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import ReactGA from 'react-ga4'; // Import ReactGA for GA4 tracking
 import {
   Container, Typography, Grid, Paper, Box, Avatar, Button, CircularProgress, TextField,
-  Tooltip, Snackbar, Alert, Slider, useTheme, useMediaQuery
+  Tooltip, Snackbar, Alert, Slider
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { Contract, ethers } from 'ethers';
@@ -11,8 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins, faWallet, faHandHoldingUsd, faClock, faChartLine, faExchangeAlt, faPercent } from '@fortawesome/free-solid-svg-icons';
 import boneTokenABI from '../assets/abi/BoneToken.json';
 import masterChefABI from '../assets/abi/MasterChef.json';
-import axios from 'axios';
 import pairABI from '../assets/abi/IUniswapV2Pair.json';
+import { Context } from "../Context";
 
 // Styled components (updated)
 const RootContainer = styled(Container)(({ theme }) => ({
@@ -132,13 +132,7 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
 }));
 
 // Constants
-const BONE_TOKEN_ADDRESS = '0x9D8dd79F2d4ba9E1C3820d7659A5F5D2FA1C22eF';
 const MASTER_CHEF_ADDRESS = '0x4f79af8335d41A98386f09d79D19Ab1552d0b925';
-
-// Contract instance functions
-const getBoneTokenInstance = (networkId, signer) => {
-  return new Contract(BONE_TOKEN_ADDRESS, boneTokenABI, signer);
-};
 
 const getMasterChefInstance = (networkId, signer) => {
   return new Contract(MASTER_CHEF_ADDRESS, masterChefABI, signer);
@@ -161,16 +155,14 @@ export default function Stake() {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
   const [tvlData, setTVLData] = useState('0');
-  const [mintmePrice, setMintmePrice] = useState(null);
-  const [bonePrice, setBonePrice] = useState(null);
-  const [bonePriceInUSD, setBonePriceInUSD] = useState(null);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  const { mintMePriceInUsdState, bonePriceInMintMeState, bonePriceInUSDState } = React.useContext(Context);
+  const [mintMePriceInUsd] = mintMePriceInUsdState;
+  const [bonePriceInMintMe] = bonePriceInMintMeState;
+  const [bonePriceInUSD] = bonePriceInUSDState;
 
   const BONE_TOKEN_ADDRESS = "0x9D8dd79F2d4ba9E1C3820d7659A5F5D2FA1C22eF";
   const BONE_TOKEN_DECIMALS = 18;
-  const coinId = 'webchain';
 
   const getBoneTokenInstance = (networkId, signer) => {
     return new Contract(BONE_TOKEN_ADDRESS, boneTokenABI, signer);
@@ -187,32 +179,13 @@ export default function Stake() {
     { id: 9, name: "1000x-DOGSP", address: "0x0cC0D3382fC2826E18606C968842A91e5C52e2b3" },
   ];
 
-  useEffect(() => {
-    fetchBalances();
-    fetchTVLData();
-    const interval = setInterval(() => {
-      fetchBalances();
-      fetchTVLData();
-    }, 300000); // Refresh every 300 seconds
-    return () => clearInterval(interval);
-  }, []);
-
   const fetchTVLData = async () => {
     try {
       setLoading(true);
-  
-      // Fetch MintMe price
-      const mintmePriceResponse = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`);
-      const mintmePriceData = mintmePriceResponse.data[coinId]?.usd;
-      if (mintmePriceData !== undefined) {
-        setMintmePrice(mintmePriceData);
-      } else {
-        throw new Error(`${coinId} price data is unavailable`);
-      }
-  
+      let mintmePriceData = mintMePriceInUsd
+
       const provider = getProvider();
       const signer = getSigner(provider);
-      const networkId = await getNetwork(provider);
   
       // Calculate price of $BONE in MintMe
       const bonePool = POOLS.find(pool => pool.name === "$BONE-WMINT");
@@ -222,8 +195,6 @@ export default function Stake() {
       const boneInWMINT = getTokenPrice(boneReserve0, boneReserve1);
       const bonePriceInMintMe = 1 / boneInWMINT;
       const bonePriceInUSDTemp = bonePriceInMintMe * mintmePriceData;
-      setBonePriceInUSD(bonePriceInUSDTemp.toFixed(8));
-      setBonePrice(bonePriceInMintMe.toFixed(8));
   
       // Calculate TVL using the MintMe price
       let tvl = 0;
@@ -417,7 +388,26 @@ export default function Stake() {
     return total > 0 ? (staked / total * 100).toFixed(2) : '0';
   }, [totalTokens, stakedAmount]);
 
-  
+  useEffect(() => {
+    fetchBalances();
+    fetchTVLData();
+    
+    const interval = setInterval(() => {
+      fetchBalances();
+      fetchTVLData();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  /*
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchBalances();
+      fetchTVLData();
+    }, 3000); // Refresh every 300 seconds
+    return () => clearInterval(interval);
+  }, [fetchBalances, fetchTVLData]);
+  */
 
   return (
     <RootContainer maxWidth="lg">
@@ -582,7 +572,7 @@ export default function Stake() {
               <Box>
                 <Typography variant="subtitle1">MintMe Price (USD)</Typography>
                 <BalanceTypography variant="h4">
-                  ${mintmePrice || 'N/A'}
+                  ${mintMePriceInUsd || 'N/A'}
                 </BalanceTypography>
               </Box>
             </Tooltip>
@@ -592,7 +582,7 @@ export default function Stake() {
           <Box>
             <Typography variant="subtitle1">BONE Price (MintMe)</Typography>
             <BalanceTypography variant="h4">
-              {bonePrice || 'N/A'} MINTME
+              {bonePriceInMintMe || 'N/A'} MINTME
             </BalanceTypography>
           </Box>
         </Tooltip>
