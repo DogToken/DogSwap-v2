@@ -102,7 +102,7 @@ function LiquidityRemover(props) {
 
   const [dialog1Open, setDialog1Open] = useState(false);
   const [dialog2Open, setDialog2Open] = useState(false);
-  const [wrongNetworkOpen, setWrongNetworkOpen] = useState(false);
+  const [wrongNetworkOpen] = useState(false);
 
   const [coin1, setCoin1] = useState({ address: undefined, symbol: undefined, balance: undefined });
   const [coin2, setCoin2] = useState({ address: undefined, symbol: undefined, balance: undefined });
