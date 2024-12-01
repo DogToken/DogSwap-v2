@@ -42,7 +42,7 @@ const MINTMECoins = [
   {
     name: "Ranger",
     abbr: "Ranger",
-    address: "0x5fed7eb4b29e9b2e2758ac40c9ec4b4e67098192",
+    address: "0x5Fed7eb4B29e9B2E2758AC40C9ec4B4E67098192",
     logoUrl: "https://dogswap.xyz/images/coins/ranger.png",
   },
   {
@@ -66,7 +66,7 @@ const MINTMECoins = [
   {
     name: "Shells",
     abbr: "Shells",
-    address: "0xaa153ce997e1363cb31231e644c4266d9c954630",
+    address: "0xaa153Ce997E1363cb31231e644c4266d9C954630",
     logoUrl: "https://dogswap.xyz/images/coins/shells.jpeg",
   },
   {

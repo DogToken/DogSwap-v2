@@ -226,7 +226,7 @@ export async function fetchReserves(address1, address2, pair, signer) {
       (await pair.token0()) === address1 ? reservesRaw[0] : reservesRaw[1],
       (await pair.token1()) === address2 ? reservesRaw[1] : reservesRaw[0],
     ];
-
+    
     // Scale each to the right decimal place
     return [
       (results[0]*10**(-coin1Decimals)),
@@ -275,7 +275,6 @@ export async function getReserves(
     const pair = new Contract(pairAddress, PAIR, signer);
   
     if (pairAddress !== '0x0000000000000000000000000000000000000000'){
-  
       const reservesRaw = await fetchReserves(address1, address2, pair, signer);
       const liquidityTokens_BN = await pair.balanceOf(accountAddress);
       const liquidityTokens = Number(
