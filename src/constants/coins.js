@@ -112,6 +112,12 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/donatello.webp",
   },
   {
+    name: "WhaleBux",
+    abbr: "WhaleBux",
+    address: "0x9f04568f8da1f7ab663f237cd672e408fba4763e",
+    logoUrl: "https://dogswap.xyz/images/coins/WBUX.png",
+  },
+  {
     name: "MineMintToken",
     abbr: "MineMintToken",
     address: "0xA27c1AbD15bfFAAde6c2e873C10fc7a2beb72d69",

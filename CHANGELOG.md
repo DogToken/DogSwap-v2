@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.9] - 2024-12-07
+
+### Fixes
+
+- Liquidity Issue (Thanks Musdasch)
+- Changed multirequest to coingecko for pricing -> Now 1 time/30 sec (Thanks Musdasch)
+- Massive code cleanup (Thanks Musdasch)
+
+### Additions
+
+- Added WhaleBux listing, logo & dogpool
+
 ## [2.2.8] - 2024-11-26
 
 ### Fixes
