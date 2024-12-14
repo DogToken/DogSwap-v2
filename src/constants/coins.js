@@ -114,7 +114,7 @@ const MINTMECoins = [
   {
     name: "WhaleBux",
     abbr: "WhaleBux",
-    address: "0x9f04568f8da1f7ab663f237cd672e408fba4763e",
+    address: "0x9F04568f8da1f7aB663f237cD672e408fBa4763e",
     logoUrl: "https://dogswap.xyz/images/coins/WBUX.png",
   },
   {
