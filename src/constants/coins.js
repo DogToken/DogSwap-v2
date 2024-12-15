@@ -52,6 +52,12 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/DAM.png",
   },
   {
+    name: "BANG",
+    abbr: "BANG",
+    address: "0xf8402c9E3218588EeEBb0CC08a01E841242bdEe0",
+    logoUrl: "https://dogswap.xyz/images/coins/BANG.png",
+  },
+  {
     name: "Zarali",
     abbr: "Zarali",
     address: "0xa88bCa314ebe9301cBa3b4C718149b05D4AD0ea5",
