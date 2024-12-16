@@ -148,6 +148,24 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/se31.png",
   },
   {
+    name: "Donatello Club",
+    abbr: "Donatello Club",
+    address: "0xb3eea81b9190892aa89244876059dd6e1456eaea",
+    logoUrl: "https://dogswap.xyz/images/coins/donclub.png",
+  },
+  {
+    name: "ULTRA-9",
+    abbr: "ULTRA-9",
+    address: "0xb5de1ee82f95583236468750977daf932979d70f",
+    logoUrl: "https://dogswap.xyz/images/coins/ultra.png",
+  },
+  {
+    name: "BOUNTY",
+    abbr: "BOUNTY",
+    address: "0xA08D7bc9CD6fCF0Bb80c993c61cAeF02e3E61FC0",
+    logoUrl: "https://dogswap.xyz/images/coins/bounty.png",
+  },
+  {
     name: "MintMoXMR",
     abbr: "MintMoXMR",
     address: "0x3AD09254A2406B6CDf2b184479EaC284E99A72D3",
