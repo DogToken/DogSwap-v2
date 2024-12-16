@@ -130,10 +130,22 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/mineminttoken.png",
   },
   {
-    name: "DGOne",
-    abbr: "DGOne",
-    address: "0x5c9D715e5d1aFd599975F93c459f44dE710DEFE2",
-    logoUrl: "https://dogswap.xyz/images/coins/dgone.png",
+    name: "BaTs",
+    abbr: "BaTs",
+    address: "0xe0358c483b65cfb60760875d11b2fa2f8421859e",
+    logoUrl: "https://dogswap.xyz/images/coins/BaTs.png",
+  },
+  {
+    name: "VecX",
+    abbr: "VecX",
+    address: "0x92bb7892c9dd0cfb87701eee940f8e69835bdbd4",
+    logoUrl: "https://dogswap.xyz/images/coins/vecx.png",
+  },
+  {
+    name: "SE31",
+    abbr: "SE31",
+    address: "0xb3eea81b9190892aa89244876059dd6e1456eaea",
+    logoUrl: "https://dogswap.xyz/images/coins/se31.png",
   },
   {
     name: "MintMoXMR",
