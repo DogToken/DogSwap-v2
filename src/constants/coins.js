@@ -169,7 +169,7 @@ const MINTMECoins = [
     name: "HealthCred",
     abbr: "HealthCred",
     address: "0x4a716d91ce3e1f5ded10df77b8b21b37c8064b25",
-    logoUrl: "https://dogswap.xyz/images/coins/healthcred.png",
+    logoUrl: "https://dogswap.xyz/images/coins/healthcred.jpeg",
   },
   {
     name: "MintMoXMR",
