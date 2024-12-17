@@ -150,7 +150,7 @@ const MINTMECoins = [
   {
     name: "Donatello Club",
     abbr: "Donatello Club",
-    address: "0xb3eea81b9190892aa89244876059dd6e1456eaea",
+    address: "0x7FCB10DAD376c44e96a73f8fBAB0617C788d717C",
     logoUrl: "https://dogswap.xyz/images/coins/donclub.png",
   },
   {
