@@ -172,6 +172,24 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/healthcred.jpeg",
   },
   {
+    name: "KRMR",
+    abbr: "KRMR",
+    address: "0xa2d8824bb755b256fd23de2c5074c890360a1e5a",
+    logoUrl: "https://dogswap.xyz/images/coins/krmr.jpeg",
+  },
+  {
+    name: "DURP",
+    abbr: "DURP",
+    address: "0x18c21d9c94abdc7daf50aec23f3110b51a5836a7",
+    logoUrl: "https://dogswap.xyz/images/coins/durp.webp",
+  },
+  {
+    name: "NINJA",
+    abbr: "NINJA",
+    address: "0x1675ef80090e4d9cd648e0debe41a7a8b7ecf4ef",
+    logoUrl: "https://dogswap.xyz/images/coins/ninja.webp",
+  },
+  {
     name: "MintMoXMR",
     abbr: "MintMoXMR",
     address: "0x3AD09254A2406B6CDf2b184479EaC284E99A72D3",
