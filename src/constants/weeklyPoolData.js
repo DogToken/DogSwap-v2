@@ -115,7 +115,7 @@ export const poolData = [
         fee: '2.5',
         weight: '4.31',
         boost: '0',
-        lpTokenAddress: '0x32D8Da81B7b4a562b0852ed6823BE8b2CCFa6495',
+        lpTokenAddress: '0x714A30450a3DCe38b6CC731Cdaa265e627D88A67',
         imageTokenA: 'https://dogswap.xyz/images/coins/bone.png',
         imageTokenB: 'https://dogswap.xyz/images/coins/BaTs.png',
     },
