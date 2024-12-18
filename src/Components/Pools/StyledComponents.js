@@ -88,3 +88,15 @@ export const FeeChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.info.light,
   color: theme.palette.info.contrastText,
 }));
+
+export const WeightChip = styled(Chip)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+  backgroundColor: theme.palette.info.main,
+  color: theme.palette.info.contrastText,
+}));
+
+export const BoostChip = styled(Chip)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+  backgroundColor: theme.palette.info.dark,
+  color: theme.palette.info.contrastText,
+}));

@@ -2,7 +2,7 @@ import React from 'react';
 import { TableBody, TableHead, TableRow, Paper, Box, Typography, Avatar, Tooltip, IconButton } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import StakingPool from './StakingPool';
-import { StyledTableContainer, StyledTable, StyledTableCell, LogoContainer, OverlappingAvatar, PoolInfoContainer, StatusChipContainer, StatusChip, FeeChip } from './StyledComponents';
+import { StyledTableContainer, StyledTable, StyledTableCell, LogoContainer, OverlappingAvatar, PoolInfoContainer, StatusChipContainer, StatusChip, FeeChip, WeightChip, BoostChip } from './StyledComponents';
 
 const PoolsTable = ({ pools, handleClick }) => {
   return (
@@ -37,6 +37,14 @@ const PoolsTable = ({ pools, handleClick }) => {
                       />
                       <FeeChip
                         label={`${pool.fee}% Fee`}
+                        size="small"
+                      />
+                      <WeightChip
+                        label={`WEIGHT: ${pool.weight}%`}
+                        size="small"
+                      />
+                      <BoostChip
+                        label={`Boost: ${pool.boost}`}
                         size="small"
                       />
                       {!pool.isActive && (

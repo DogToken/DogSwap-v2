@@ -1,5 +1,5 @@
 const newsItems = [
-    "Visit our featured pool: https://beta.dogswap.xyz/featured",
+    "Visit our featured pool: https://dogswap.xyz/featured",
     "The previous release is still available on https://old.dogswap.xyz",
     "Does anyone know the location of John Connor?",
     "The Bone Pools are active when payment is processed on MintMe!",
@@ -7,6 +7,7 @@ const newsItems = [
     "Visit XatteR here: https://ancientbeast.com/",
     "Spotted an error, spelling mistake or bug? Shoot me a message!",
     "DogSwap is looking for active community members!",
+    "WEIGHT means, the more, the better the rewards."
   ];
   
   export default newsItems;
