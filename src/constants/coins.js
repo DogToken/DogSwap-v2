@@ -132,7 +132,7 @@ const MINTMECoins = [
   {
     name: "BaTs",
     abbr: "BaTs",
-    address: "0xe0358c483b65cfb60760875d11b2fa2f8421859e",
+    address: "0xE0358C483b65cFb60760875d11b2FA2F8421859e",
     logoUrl: "https://dogswap.xyz/images/coins/BaTs.png",
   },
   {
