@@ -208,6 +208,18 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/zenny.jpeg",
   },
   {
+    name: "LYME",
+    abbr: "LYME",
+    address: "0xDCC4A184D6598C4eDc01A93C82f2E2cA21366b86",
+    logoUrl: "https://dogswap.xyz/images/coins/lyme.png",
+  },
+  {
+    name: "ToysRus",
+    abbr: "ToysRus",
+    address: "0xecbb9a4be6a7826dc33ac4c3709848937c68b849",
+    logoUrl: "https://dogswap.xyz/images/coins/trus.jpeg",
+  },
+  {
     name: "10K Litoshi",
     abbr: "10K Litoshi",
     address: "0x02d0E745f6A5BCC5216E63E12249e08514CcFfE4",
