@@ -138,13 +138,13 @@ const MINTMECoins = [
   {
     name: "VecX",
     abbr: "VecX",
-    address: "0x92bb7892c9dd0cfb87701eee940f8e69835bdbd4",
+    address: "0x92bB7892c9DD0cFB87701eEe940f8E69835Bdbd4",
     logoUrl: "https://dogswap.xyz/images/coins/vecx.png",
   },
   {
     name: "SE31",
     abbr: "SE31",
-    address: "0xb3eea81b9190892aa89244876059dd6e1456eaea",
+    address: "0xB3eea81b9190892AA89244876059Dd6e1456EAEA",
     logoUrl: "https://dogswap.xyz/images/coins/se31.png",
   },
   {
@@ -168,25 +168,25 @@ const MINTMECoins = [
   {
     name: "HealthCred",
     abbr: "HealthCred",
-    address: "0x4a716d91ce3e1f5ded10df77b8b21b37c8064b25",
+    address: "0x4a716D91ce3e1F5DEd10df77b8B21B37c8064b25",
     logoUrl: "https://dogswap.xyz/images/coins/healthcred.jpeg",
   },
   {
     name: "KRMR",
     abbr: "KRMR",
-    address: "0xa2d8824bb755b256fd23de2c5074c890360a1e5a",
+    address: "0xa2d8824Bb755b256FD23DE2C5074C890360A1E5a",
     logoUrl: "https://dogswap.xyz/images/coins/krmr.jpeg",
   },
   {
     name: "DURP",
     abbr: "DURP",
-    address: "0x18c21d9c94abdc7daf50aec23f3110b51a5836a7",
+    address: "0x18c21d9c94ABdc7dAF50AeC23F3110B51a5836a7",
     logoUrl: "https://dogswap.xyz/images/coins/durp.webp",
   },
   {
     name: "NINJA",
     abbr: "NINJA",
-    address: "0x1675ef80090e4d9cd648e0debe41a7a8b7ecf4ef",
+    address: "0x1675ef80090E4D9cd648E0deBE41a7A8B7ECF4Ef",
     logoUrl: "https://dogswap.xyz/images/coins/ninja.webp",
   },
   {
@@ -216,7 +216,7 @@ const MINTMECoins = [
   {
     name: "ToysRus",
     abbr: "ToysRus",
-    address: "0xecbb9a4be6a7826dc33ac4c3709848937c68b849",
+    address: "0xECBB9a4be6a7826dc33AC4c3709848937C68B849",
     logoUrl: "https://dogswap.xyz/images/coins/trus.jpeg",
   },
   {
