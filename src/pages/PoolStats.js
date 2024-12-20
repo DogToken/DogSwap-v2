@@ -95,26 +95,26 @@ const TOKEN_DECIMALS = {
 
 // Pools configuration
 const POOLS = [
-  { id: 0, name: "$BONE-WMINT", address: "0x21D897515b2C4393F7a23BBa210b271D13CCdF10" },
+  { id: 0, name: "WMINT-$BONE", address: "0x21D897515b2C4393F7a23BBa210b271D13CCdF10" },
   { id: 1, name: "$BONE-USDC", address: "0x0BA7216BD34CAF32d1FBCb9341997328b38a03a3" },
   { id: 2, name: "WMINT-USDC", address: "0x1Ea95048A66455C3852dBE4620A3970831564189" },
-  { id: 5, name: "WMINT-DOGSP", address: "0x07Da7DA47b3C71a023d194ff623ab3a737c46393" },
-  { id: 6, name: "$BONE-DOGSP", address: "0xCfFF901398cB001D740FFf564D2dcc9Dbd898a11" },
-  { id: 7, name: "1000x-WMINT", address: "0x34D99393593245F3268ceAcf35a17407C49c4D59" },
+  { id: 5, name: "DOGSP-BONE", address: "0x07Da7DA47b3C71a023d194ff623ab3a737c46393" },
+  { id: 6, name: "WMINT-DOGSP", address: "0xCfFF901398cB001D740FFf564D2dcc9Dbd898a11" },
+  { id: 7, name: "WMINT-1000x", address: "0x34D99393593245F3268ceAcf35a17407C49c4D59" },
   { id: 8, name: "1000x-$BONE", address: "0x9763E377ce4E6767F7760D9E1FC7E3c2afBc9Cfb" },
-  { id: 9, name: "1000x-DOGSP", address: "0x0cC0D3382fC2826E18606C968842A91e5C52e2b3" },
+  { id: 9, name: "DOGSP-1000x", address: "0x0cC0D3382fC2826E18606C968842A91e5C52e2b3" },
   { id: 10, name: "WMINT-XTR", address: "0x1d2a64b660E572ce653f35Ce5A9A655D05ae9fd0" },
-  { id: 11, name: "BONE-DAM", address: "0xDaEEc4298a0ED4796E271188D2D7Bbcf53733Fb1" },
+  { id: 11, name: "DAM-BONE", address: "0xDaEEc4298a0ED4796E271188D2D7Bbcf53733Fb1" },
   { id: 12, name: "BONE-ZAR", address: "0xE4020B6d3073B79027e2350705f9230903130791" },
   { id: 13, name: "BONE-XTR", address: "0x32D8Da81B7b4a562b0852ed6823BE8b2CCFa6495" },
   { id: 14, name: "BONE-BANG", address: "0x84D0Ee4262cfD4ea222554D4FAE1A5Df7c38D9Be" },
-  { id: 15, name: "BONE-DGONE", address: "0x5D8274da127f7D94b46D123090707BBBCd4Ed119" },
-  { id: 16, name: "BONE-BOBD", address: "0x1607D3CaB18F24e3De082Fd2F297b0d3B0fc0112" },
+  { id: 15, name: "DGONE-BONE", address: "0x5D8274da127f7D94b46D123090707BBBCd4Ed119" },
+  { id: 16, name: "BOBD-BONE", address: "0x1607D3CaB18F24e3De082Fd2F297b0d3B0fc0112" },
   { id: 17, name: "BONE-CLICK", address: "0xf099c8D1cd95608F5D5e70da8581c4981d4f3a3f" },
-  { id: 18, name: "BONE-DCLUB", address: "0x66b700c1039182C6fD653b429A14bf4BC2d98a4A" },
+  { id: 18, name: "DCLUB-BONE", address: "0x66b700c1039182C6fD653b429A14bf4BC2d98a4A" },
   { id: 19, name: "BONE-SHELLS", address: "0x662ca8cAceBfd41442c536D0153Ed181bfD34c60" },
-  { id: 20, name: "BONE-DWMW", address: "0xee1780dc28D0948fe46FC10fcED1B44F5d1a5971" },
-  { id: 21, name: "BONE-RANGER", address: "0xC5a3D921a8c3FA452c278D5278EA1aeb28C0Ecb2" },
+  { id: 20, name: "DWMW-BONE", address: "0xee1780dc28D0948fe46FC10fcED1B44F5d1a5971" },
+  { id: 21, name: "RANGER-BONE", address: "0xC5a3D921a8c3FA452c278D5278EA1aeb28C0Ecb2" },
   { id: 22, name: "BONE-WBUX", address: "0xD288C9aC27b608dB905B98AB0fDfd0Ea68059ecc" },
   { id: 23, name: "BONE-BATS", address: "0x714A30450a3DCe38b6CC731Cdaa265e627D88A67" }
 ];
@@ -141,7 +141,7 @@ export default function PoolsStatistics() {
       return parseInt(decimals);
     } catch (error) {
       console.error(`Error fetching decimals for ${tokenSymbol}:`, error);
-      return 18;
+      return 12;
     }
   };
 
@@ -159,6 +159,31 @@ export default function PoolsStatistics() {
         return numAmount * bonePriceInUSD;
     }
   };
+
+  const getTokenData = async (pairContract, tokenAddress) => {
+    try {
+      const tokenContract = new Contract(tokenAddress, erc20ABI, getProvider());
+      const [symbol, decimals] = await Promise.all([
+        tokenContract.symbol(),
+        tokenContract.decimals()
+      ]);
+      return { symbol, decimals: parseInt(decimals) };
+    } catch (error) {
+      console.error(`Error fetching token data:`, error);
+      // Fallback to finding symbol from pool name
+      const poolName = POOLS.find(p => p.address === pairContract.address)?.name || '';
+      const symbols = poolName.split('-');
+      // Try to match address ending with token symbols we know
+      const matchingSymbol = symbols.find(s => 
+        TOKEN_DECIMALS[s] !== undefined
+      );
+      return {
+        symbol: matchingSymbol || 'UNKNOWN',
+        decimals: TOKEN_DECIMALS[matchingSymbol] || 12
+      };
+    }
+  };
+
 
   const fetchPoolsData = async () => {
     try {
@@ -181,19 +206,19 @@ export default function PoolsStatistics() {
           pairContract.token1()
         ]);
 
-        const [token0Symbol, token1Symbol] = pool.name.split('-');
-        const [decimals0, decimals1] = await Promise.all([
-          getTokenDecimals(token0Address, token0Symbol),
-          getTokenDecimals(token1Address, token1Symbol)
+        // Get actual token data instead of assuming from pool name
+        const [token0Data, token1Data] = await Promise.all([
+          getTokenData(pairContract, token0Address),
+          getTokenData(pairContract, token1Address)
         ]);
 
-        const reserve0 = ethers.utils.formatUnits(reserves[0], decimals0);
-        const reserve1 = ethers.utils.formatUnits(reserves[1], decimals1);
+        const reserve0 = ethers.utils.formatUnits(reserves[0], token0Data.decimals);
+        const reserve1 = ethers.utils.formatUnits(reserves[1], token1Data.decimals);
         const lpTokens = ethers.utils.formatUnits(totalSupply, 18);
 
-        // Calculate value of each token in USD using BONE price as reference
-        const token0USD = calculateTokenValue(reserve0, token0Symbol);
-        const token1USD = calculateTokenValue(reserve1, token1Symbol);
+        // Calculate value of each token in USD using prices from context
+        const token0USD = calculateTokenValue(reserve0, token0Data.symbol);
+        const token1USD = calculateTokenValue(reserve1, token1Data.symbol);
 
         // Calculate total liquidity
         const liquidityUSD = token0USD + token1USD;
@@ -213,6 +238,8 @@ export default function PoolsStatistics() {
           liquidityUSD: liquidityUSD.toFixed(2),
           token0Address,
           token1Address,
+          token0Symbol: token0Data.symbol,
+          token1Symbol: token1Data.symbol,
           token0USD: token0USD.toFixed(2),
           token1USD: token1USD.toFixed(2)
         });
@@ -231,7 +258,7 @@ export default function PoolsStatistics() {
 
   useEffect(() => {
     fetchPoolsData();
-    const interval = setInterval(fetchPoolsData, 90000);
+    const interval = setInterval(fetchPoolsData, 30000000);
     return () => clearInterval(interval);
   }, [mintMePriceInUsd, bonePriceInUSD]);
 
