@@ -21,6 +21,7 @@ import { Route, Routes } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import Liquidity from "./pages/Liquidity";
 import PoolStats from "./pages/PoolStats";
+import AllPoolStats from "./pages/AllPoolStats";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 import { Context } from "./Context.js";
@@ -101,6 +102,7 @@ const App = () => {
                     <Route path="/control" element={<Control network={network} />} />
                     <Route path="/bonepools" element={<BonePools network={network} />} />
                     <Route path="/poolstats" element={<PoolStats network={network} />} />
+                    <Route path="/allpoolstats" element={<AllPoolStats network={network} />} />
                     <Route path="*" element={<Home network={network} />} />
                   </Routes>
                   <Footer />
