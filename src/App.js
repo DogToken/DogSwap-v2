@@ -88,7 +88,6 @@ const App = () => {
                   <NarBar />
                   <Routes>
                     <Route path="/swap" element={<CoinSwapper network={network} />} />
-                    <Route path="/home" element={<Home network={network} />} />
                     <Route path="/liquidity" element={<Liquidity network={network} />} />
                     <Route path="/stake" element={<Stake network={network} />} />
                     <Route path="/pools" element={<Pools network={network} />} />
@@ -103,7 +102,7 @@ const App = () => {
                     <Route path="/bonepools" element={<BonePools network={network} />} />
                     <Route path="/poolstats" element={<PoolStats network={network} />} />
                     <Route path="/allpoolstats" element={<AllPoolStats network={network} />} />
-                    <Route path="*" element={<Home network={network} />} />
+                    <Route path="*" element={<CoinSwapper network={network} />} />
                   </Routes>
                   <Footer />
                 </div>

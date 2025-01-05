@@ -156,9 +156,17 @@ const NavBar = () => {
                       <Typography>{formatAddress(userAddress)}</Typography>
                     </MenuItem>
                     <MenuItem>
-                      <Link to="/dash" className="user-menu-item">
-                        Dashboard
-                      </Link>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <Link to="/dash" className="user-menu-item">
+                          Dashboard
+                        </Link>
+                        <Link to="/poolstats" className="user-menu-item">
+                          Pool Statistics
+                        </Link>
+                        <Link to="/allpoolstats" className="user-menu-item">
+                          All Pool Statistics
+                        </Link>
+                      </div>
                     </MenuItem>
                     <MenuItem onClick={disconnectWallet} className="disconnect-button">
                       Disconnect
