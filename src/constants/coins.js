@@ -26,7 +26,7 @@ const MINTMECoins = [
     abbr: "1000X",
     address: "0x7b535379bBAfD9cD12b35D91aDdAbF617Df902B2",
     logoUrl: "https://dogswap.xyz/images/coins/1000x.png",
-  },,
+  },
   {
     name: "DirtyCash",
     abbr: "$DIRTY",
