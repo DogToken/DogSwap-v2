@@ -26,6 +26,12 @@ const MINTMECoins = [
     abbr: "1000X",
     address: "0x7b535379bBAfD9cD12b35D91aDdAbF617Df902B2",
     logoUrl: "https://dogswap.xyz/images/coins/1000x.png",
+  },,
+  {
+    name: "DirtyCash",
+    abbr: "$DIRTY",
+    address: "0x29a80Bf0e52C3ff636E2bc54E6F49daD22e2fA5C",
+    logoUrl: "https://dogswap.xyz/images/coins/dirty.png",
   },
   {
     name: "Peppermint",
