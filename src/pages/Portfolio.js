@@ -6,7 +6,7 @@ import { Contract, ethers } from 'ethers';
 import boneTokenABI from "../assets/abi/IERC20.json";
 import masterChefABI from '../assets/abi/MasterChef.json';
 import { poolData } from '../constants/weeklyPoolData';
-import { Bar } from 'react-chartjs-2';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // Styled components
 const RootContainer = styled(Container)(({ theme }) => ({
@@ -82,26 +82,12 @@ const PortfolioTracker = () => {
   const totalStakedTokens = portfolioData.reduce((acc, pool) => acc + parseFloat(pool.stakedLpTokens), 0).toFixed(5);
   const totalPendingRewards = portfolioData.reduce((acc, pool) => acc + parseFloat(pool.pendingBone), 0).toFixed(5);
 
-  const chartData = {
-    labels: portfolioData.map(pool => pool.title),
-    datasets: [
-      {
-        label: 'Wallet Balance (LP)',
-        data: portfolioData.map(pool => parseFloat(pool.walletBalance)),
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-      },
-      {
-        label: 'Staked Tokens (LP)',
-        data: portfolioData.map(pool => parseFloat(pool.stakedLpTokens)),
-        backgroundColor: 'rgba(153, 102, 255, 0.6)',
-      },
-      {
-        label: 'Pending Rewards ($BONE)',
-        data: portfolioData.map(pool => parseFloat(pool.pendingBone)),
-        backgroundColor: 'rgba(255, 159, 64, 0.6)',
-      },
-    ],
-  };
+  const chartData = portfolioData.map(pool => ({
+    name: pool.title,
+    walletBalance: parseFloat(pool.walletBalance),
+    stakedTokens: parseFloat(pool.stakedLpTokens),
+    pendingRewards: parseFloat(pool.pendingBone),
+  }));
 
   if (isLoading) {
     return (
@@ -160,7 +146,17 @@ const PortfolioTracker = () => {
       </TableContainer>
       <Box mt={4}>
         <Typography variant="h6" gutterBottom>Portfolio Distribution</Typography>
-        <Bar data={chartData} />
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="walletBalance" fill="#8884d8" />
+            <Bar dataKey="stakedTokens" fill="#82ca9d" />
+            <Bar dataKey="pendingRewards" fill="#ffc658" />
+          </BarChart>
+        </ResponsiveContainer>
       </Box>
     </RootContainer>
   );
