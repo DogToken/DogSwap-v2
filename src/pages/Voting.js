@@ -3,7 +3,7 @@ import { Container, Typography, Box, CircularProgress, Grid, Paper, Button, Aler
 import { styled } from '@mui/system';
 import { getProvider, getSigner } from '../utils/ethereumFunctions';
 import { Contract, ethers } from 'ethers';
-import boneTokenABI from '../assets/abi/IERC20.json';
+import boneTokenABI from '../assets/abi/BoneToken.json';
 import proposals from '../assets/data/proposals.json'; // Import proposals from JSON file
 
 // Styled components
