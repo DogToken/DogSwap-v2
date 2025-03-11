@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box, CircularProgress, Grid, Paper } from '@mui/material';
+import { Container, Typography, Box, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Grid } from '@mui/material';
 import { styled } from '@mui/system';
 import { getProvider, getSigner } from '../utils/ethereumFunctions';
 import { Contract, ethers } from 'ethers';
 import boneTokenABI from "../assets/abi/IERC20.json";
 import masterChefABI from '../assets/abi/MasterChef.json';
 import { poolData } from '../constants/weeklyPoolData';
+import { Bar } from 'react-chartjs-2';
 
 // Styled components
 const RootContainer = styled(Container)(({ theme }) => ({
@@ -25,6 +26,11 @@ const TitleTypography = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
   color: theme.palette.primary.main,
   fontSize: '2rem',
+}));
+
+const SummaryBox = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  marginBottom: theme.spacing(3),
 }));
 
 const PortfolioTracker = () => {
@@ -72,6 +78,31 @@ const PortfolioTracker = () => {
     }
   };
 
+  const totalWalletBalance = portfolioData.reduce((acc, pool) => acc + parseFloat(pool.walletBalance), 0).toFixed(5);
+  const totalStakedTokens = portfolioData.reduce((acc, pool) => acc + parseFloat(pool.stakedLpTokens), 0).toFixed(5);
+  const totalPendingRewards = portfolioData.reduce((acc, pool) => acc + parseFloat(pool.pendingBone), 0).toFixed(5);
+
+  const chartData = {
+    labels: portfolioData.map(pool => pool.title),
+    datasets: [
+      {
+        label: 'Wallet Balance (LP)',
+        data: portfolioData.map(pool => parseFloat(pool.walletBalance)),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+      },
+      {
+        label: 'Staked Tokens (LP)',
+        data: portfolioData.map(pool => parseFloat(pool.stakedLpTokens)),
+        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+      },
+      {
+        label: 'Pending Rewards ($BONE)',
+        data: portfolioData.map(pool => parseFloat(pool.pendingBone)),
+        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+      },
+    ],
+  };
+
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="200px">
@@ -84,29 +115,53 @@ const PortfolioTracker = () => {
     <RootContainer maxWidth="lg">
       <Header>
         <TitleTypography variant="h4">Portfolio Tracker</TitleTypography>
+        <Button variant="contained" color="primary" onClick={fetchPortfolioData}>Refresh</Button>
       </Header>
-      <Grid container spacing={3}>
-        {portfolioData.map((pool, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Paper elevation={3} sx={{ padding: 2 }}>
-              <Typography variant="h6">{pool.title}</Typography>
-              <Typography variant="body2" color="textSecondary">{pool.subTitle}</Typography>
-              <Box display="flex" justifyContent="space-between" mt={2}>
-                <Typography variant="body2">Wallet Balance:</Typography>
-                <Typography variant="body2">{pool.walletBalance} LP</Typography>
-              </Box>
-              <Box display="flex" justifyContent="space-between" mt={1}>
-                <Typography variant="body2">Staked Tokens:</Typography>
-                <Typography variant="body2">{pool.stakedLpTokens} LP</Typography>
-              </Box>
-              <Box display="flex" justifyContent="space-between" mt={1}>
-                <Typography variant="body2">Pending Rewards:</Typography>
-                <Typography variant="body2">{pool.pendingBone} $BONE</Typography>
-              </Box>
-            </Paper>
+      <SummaryBox elevation={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6">Total Wallet Balance</Typography>
+            <Typography variant="body1">{totalWalletBalance} LP</Typography>
           </Grid>
-        ))}
-      </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6">Total Staked Tokens</Typography>
+            <Typography variant="body1">{totalStakedTokens} LP</Typography>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6">Total Pending Rewards</Typography>
+            <Typography variant="body1">{totalPendingRewards} $BONE</Typography>
+          </Grid>
+        </Grid>
+      </SummaryBox>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Pool</TableCell>
+              <TableCell align="right">Wallet Balance (LP)</TableCell>
+              <TableCell align="right">Staked Tokens (LP)</TableCell>
+              <TableCell align="right">Pending Rewards ($BONE)</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {portfolioData.map((pool, index) => (
+              <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  <Typography variant="h6">{pool.title}</Typography>
+                  <Typography variant="body2" color="textSecondary">{pool.subTitle}</Typography>
+                </TableCell>
+                <TableCell align="right">{pool.walletBalance}</TableCell>
+                <TableCell align="right">{pool.stakedLpTokens}</TableCell>
+                <TableCell align="right">{pool.pendingBone}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box mt={4}>
+        <Typography variant="h6" gutterBottom>Portfolio Distribution</Typography>
+        <Bar data={chartData} />
+      </Box>
     </RootContainer>
   );
 };
