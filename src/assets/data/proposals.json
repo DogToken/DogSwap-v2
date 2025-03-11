@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "description": "Proposal to increase staking rewards",
+        "voteCount": 0
+    },
+    {
+        "id": 2,
+        "description": "Proposal to reduce transaction fees",
+        "voteCount": 0
+    }
+]

@@ -22,6 +22,8 @@ import { SnackbarProvider } from "notistack";
 import Liquidity from "./pages/Liquidity";
 import PoolStats from "./pages/PoolStats";
 import AllPoolStats from "./pages/AllPoolStats";
+import PortfolioTracker from "./pages/Portfolio.js";
+import GovernanceVoting from "./pages/Voting.js";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 import { Context } from "./Context.js";
@@ -102,6 +104,8 @@ const App = () => {
                     <Route path="/bonepools" element={<BonePools network={network} />} />
                     <Route path="/poolstats" element={<PoolStats network={network} />} />
                     <Route path="/allpoolstats" element={<AllPoolStats network={network} />} />
+                    <Route path="/portfolio" element={<PortfolioTracker network={network} />} />
+                    <Route path="/voting" element={<GovernanceVoting network={network} />} />
                     <Route path="*" element={<CoinSwapper network={network} />} />
                   </Routes>
                   <Footer />
