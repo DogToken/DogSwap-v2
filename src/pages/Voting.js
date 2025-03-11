@@ -43,7 +43,7 @@ const GovernanceVoting = () => {
 
       const counts = await Promise.all(
         proposals.map(async (proposal) => {
-          const votes = await governanceContract.getCurrentVotes(proposal.id);
+          const votes = await governanceContract.getCurrentVotes(proposal.address); // Assuming each proposal has an 'address' field
           return votes.toString();
         })
       );
@@ -57,13 +57,13 @@ const GovernanceVoting = () => {
     }
   };
 
-  const handleVote = async (proposalId, support) => {
+  const handleVote = async (proposalAddress, support) => {
     try {
       const provider = getProvider();
       const signer = getSigner(provider);
       const governanceContract = new Contract('0x9d8dd79f2d4ba9e1c3820d7659a5f5d2fa1c22ef', boneTokenABI, signer);
 
-      const tx = await governanceContract.delegate(support);
+      const tx = await governanceContract.delegate(proposalAddress); // Assuming delegate function is used for voting
       await tx.wait();
       alert('Vote cast successfully!');
       fetchVoteCounts();
@@ -95,10 +95,10 @@ const GovernanceVoting = () => {
               <Typography variant="body2" color="textSecondary">{proposal.description}</Typography>
               <Typography variant="body2" color="textSecondary">Vote Count: {voteCounts[index]}</Typography>
               <Box display="flex" justifyContent="space-between" mt={2}>
-                <Button variant="contained" color="primary" onClick={() => handleVote(proposal.id, true)}>
+                <Button variant="contained" color="primary" onClick={() => handleVote(proposal.address, true)}>
                   Vote For
                 </Button>
-                <Button variant="contained" color="secondary" onClick={() => handleVote(proposal.id, false)}>
+                <Button variant="contained" color="secondary" onClick={() => handleVote(proposal.address, false)}>
                   Vote Against
                 </Button>
               </Box>
