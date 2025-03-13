@@ -154,10 +154,28 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/se31.png",
   },
   {
+    name: "Toxic Snek",
+    abbr: "Toxic Snek",
+    address: "0xfe6fbb18a29439f744c8cb554ed9b325d013763d",
+    logoUrl: "https://app.dogswap.xyz/images/coins/tsnek.jpeg",
+  },
+  {
+    name: "Pirate",
+    abbr: "Pirate",
+    address: "0xf85a07a0a4b94a8896001c165af59b1311af614a",
+    logoUrl: "https://app.dogswap.xyz/images/coins/pirate.jpg",
+  },
+  {
     name: "Donatello Club",
     abbr: "Donatello Club",
     address: "0x7FCB10DAD376c44e96a73f8fBAB0617C788d717C",
     logoUrl: "https://dogswap.xyz/images/coins/donclub.png",
+  },
+  {
+    name: "FIXERCOIN",
+    abbr: "FIXERCOIN",
+    address: "0x091da08c5bf888252ed1ab3e44246cbf72d63307",
+    logoUrl: "https://app.dogswap.xyz/images/coins/fixer.png",
   },
   {
     name: "ULTRA-9",
