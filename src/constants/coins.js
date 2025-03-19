@@ -43,7 +43,7 @@ const MINTMECoins = [
     name: "XatteR",
     abbr: "XatteR",
     address: "0xB580f1dbA1c17882Fca8f6DDadA8428c9cB177fC",
-    logoUrl: "https://dogswap.xyz/images/coins/xatter.png",
+    logoUrl: "https://app.dogswap.xyz/images/coins/xatter.png",
   },
   {
     name: "Porncoin",
