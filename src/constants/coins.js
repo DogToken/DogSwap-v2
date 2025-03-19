@@ -48,7 +48,7 @@ const MINTMECoins = [
   {
     name: "Porncoin",
     abbr: "Porncoin",
-    address: "0x488d5dbe9d9a57628428cd98645ed1dfbebf6cd4",
+    address: "0x488d5DBe9d9a57628428cd98645ED1dFbebF6cD4",
     logoUrl: "https://dogswap.xyz/images/coins/porncoin.png",
   },
   {
