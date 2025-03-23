@@ -180,7 +180,7 @@ const MINTMECoins = [
   {
     name: "FIXERCOIN",
     abbr: "FIXERCOIN",
-    address: "0x091da08c5bf888252ed1ab3e44246cbf72d63307",
+    address: "0x091da08c5BF888252ed1ab3E44246cBf72D63307",
     logoUrl: "https://app.dogswap.xyz/images/coins/fixer.png",
   },
   {
