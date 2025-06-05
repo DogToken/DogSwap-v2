@@ -178,6 +178,11 @@ const MINTMECoins = [
     logoUrl: "https://dogswap.xyz/images/coins/donclub.png",
   },
   {
+    name: "CryptoGroove",
+    abbr: "CryptoGroove",
+    address: "0xfa4a497d91df0e9dcaf94f5ff3a10b22e6c8fc49",
+    logoUrl: "https://www.mintme.com/media/cache/avatar_large/uploads/images/432b5e98-3451-11f0-bd4c-ac162db679ce.png",
+  },{
     name: "FIXERCOIN",
     abbr: "FIXERCOIN",
     address: "0x091da08c5BF888252ed1ab3E44246cBf72D63307",
